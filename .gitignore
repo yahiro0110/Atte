@@ -3,7 +3,9 @@
 .vscode/settings.json
 docker/mysql/data/*
 src/resources/views/test.blade.php
+src/public/scss/test.scss
 src/public/css/test.css
+src/public/css/test.css.map
 src/public/js/test.js
 src/resources/views/vendor/pagination/bootstrap-4.blade.php
 src/resources/views/vendor/pagination/default.blade.php

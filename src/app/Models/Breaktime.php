@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Breaktime extends Model
 {
     use HasFactory;
+
+    public function attendance()
+    {
+        return $this->belongsTo(Attendance::class);
+    }
 }

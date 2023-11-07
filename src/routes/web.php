@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\BreaktimeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +16,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [EmployeeController::class, 'show'])->name('employee.home');

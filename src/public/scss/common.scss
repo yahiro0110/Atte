@@ -1,0 +1,66 @@
+/*--------------------------------------------------
+全般
+--------------------------------------------------*/
+body {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100lvh;
+}
+
+main {
+    background: #f2f2f2;
+}
+
+/*--------------------------------------------------
+ヘッダー
+--------------------------------------------------*/
+.header {
+    background: #fafafa;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.header__inner {
+    width: 1500px;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__logo {
+    img {
+        width: 140px;
+        height: 70px;
+        // svgファイルの背景を透過
+        mix-blend-mode: multiply;
+    }
+}
+
+.header__nav {
+    ul {
+        display: flex;
+        list-style: none;
+    }
+}
+
+.header__nav-item {
+    a {
+        text-decoration: none;
+        color: #000;
+        display: block;
+        padding: 1rem 1rem;
+    }
+}
+
+/*--------------------------------------------------
+フッター
+--------------------------------------------------*/
+.footer {
+    background: #fafafa;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

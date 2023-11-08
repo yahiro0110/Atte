@@ -17,8 +17,8 @@ class CreateAttendancesTable extends Migration
             $table->id();
             $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
             $table->date('date');
-            $table->dateTime('start_time');
-            $table->dateTime('end_time')->nullable();
+            $table->time('start_time');
+            $table->time('end_time')->nullable();
             $table->tinyInteger('work_status')->default(1);
             $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->useCurrent()->nullable();

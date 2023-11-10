@@ -1,8 +1,16 @@
 @charset "UTF-8";
+.header {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .content {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 100px;
+  overflow: auto;
   /*--------------------------------------------------
   メッセージエリア
   --------------------------------------------------*/
@@ -55,15 +63,24 @@
 .content__table-container th,
 .content__table-container td {
   border: none; /* すべての境界線を非表示 */
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #909090;
   padding: 15px;
   text-align: left;
 }
 .content__table-container th {
-  border-top: 1px solid #000;
+  border-top: 1px solid #909090;
 }
 .content__table-container td {
   white-space: normal;
+}
+.content__table-tr-weekend {
+  background-color: #909090;
+}
+.content__table-td-date {
+  width: 175px;
+}
+.content__table-td-time {
+  width: 180px;
 }
 .content__table-btn {
   margin-top: 0.5rem;

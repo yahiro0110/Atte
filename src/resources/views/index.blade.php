@@ -31,26 +31,32 @@
         <div class="content__table">
             <table class="content__table-container">
                 <tr>
-                    <th>日付</th>
-                    <th>勤務開始</th>
-                    <th>勤務終了</th>
-                    <th>休憩時間</th>
-                    <th>勤務時間</th>
+                    <th class="content__table-td-date">日付</th>
+                    <th class="content__table-td-time">勤務開始</th>
+                    <th class="content__table-td-time">勤務終了</th>
+                    <th class="content__table-td-time">休憩時間</th>
+                    <th class="content__table-td-time">勤務時間</th>
                     <th></th>
                 </tr>
                 @foreach ($results as $attendance)
-                    <tr>
-                        <td>{{ \Carbon\Carbon::parse($attendance->date)->locale('ja')->isoFormat('M/D(dd)') }}</td>
-                        <td>{{ $attendance->start_time }}</td>
-                        <td>{{ $attendance->end_time }}</td>
-                        <td>
+                    @php
+                        $carbonDate = \Carbon\Carbon::parse($attendance->date);
+                        $isWeekend = $carbonDate->isWeekend();
+                    @endphp
+                    <tr class="{{ $isWeekend ? 'content__table-tr-weekend' : '' }}">
+                        <td class="content__table-td-date">
+                            {{ \Carbon\Carbon::parse($attendance->date)->locale('ja')->isoFormat('M/D(dd)') }}
+                        </td>
+                        <td lass="content__table-td-time">{{ $attendance->start_time }}</td>
+                        <td lass="content__table-td-time">{{ $attendance->end_time }}</td>
+                        <td lass="content__table-td-time">
                             @if ($attendance->work_status == 6)
                                 00:00:00
                             @else
                                 {{ $breakTimes[$attendance->id] }}
                             @endif
                         </td>
-                        <td>
+                        <td lass="content__table-td-time">
                             @if ($attendance->work_status == 6)
                                 00:00:00
                             @else

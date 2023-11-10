@@ -1,0 +1,81 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /*--------------------------------------------------
+    メッセージエリア
+    --------------------------------------------------*/
+    &__message {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        padding-left: 4rem;
+        width: 1500px;
+        font-size: 20px;
+    }
+    &__title {
+        font-size: 1.25rem;
+        ul {
+            display: flex;
+            padding: 0;
+            justify-content: center;
+            align-items: center;
+            list-style: none;
+        }
+        li {
+            padding-left: 1rem;
+            padding-right: 1rem;
+            &:has(a) {
+                border: 1px solid #214be0;
+                background-color: #fafafa;
+            }
+        }
+        a {
+            text-decoration: none;
+            color: #214be0;
+            display: block;
+        }
+    }
+    /*--------------------------------------------------
+    日付エリア
+    --------------------------------------------------*/
+    &__table {
+        padding-top: 1rem;
+        padding-bottom: 4rem;
+        display: flex;
+        justify-content: center; /* テーブルを水平中央に配置 */
+        align-items: center;
+        &-container {
+            margin: 0;
+            width: 1000px;
+            border-collapse: collapse; /* セルの境界線を結合 */
+            th,
+            td {
+                border: none; /* すべての境界線を非表示 */
+                border-bottom: 1px solid #000;
+                padding: 15px;
+                text-align: left;
+            }
+            th {
+                border-top: 1px solid #000;
+            }
+            td {
+                white-space: normal;
+            }
+        }
+        &-btn {
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            width: 200px;
+            border-radius: 5px;
+            background: #214be0;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+            font-size: 0.8rem;
+        }
+    }
+}

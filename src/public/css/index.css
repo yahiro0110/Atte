@@ -1,67 +1,82 @@
-table {
-    border-collapse: collapse;
-    width: 100%;
-    margin-bottom: 1rem;
-    background-color: #fff;
-    color: #212529;
-    font-size: 0.9rem;
-    font-weight: 400;
-    text-align: left;
-    vertical-align: middle;
+@charset "UTF-8";
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /*--------------------------------------------------
+  メッセージエリア
+  --------------------------------------------------*/
+  /*--------------------------------------------------
+  日付エリア
+  --------------------------------------------------*/
 }
-
-table th,
-table td {
-    padding: 0.75rem;
-    vertical-align: top;
-    border-top: 1px solid #dee2e6;
+.content__message {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 4rem;
+  width: 1500px;
+  font-size: 20px;
 }
-
-table th {
-    font-weight: 700;
-    background-color: #f8f9fa;
+.content__title {
+  font-size: 1.25rem;
 }
-
-table tbody tr:nth-of-type(even) {
-    background-color: #f2f2f2;
+.content__title ul {
+  display: flex;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
 }
-
-table tbody tr:hover {
-    background-color: #e9ecef;
+.content__title li {
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
-
-a.btn {
-    display: inline-block;
-    font-weight: 400;
-    color: #212529;
-    text-align: center;
-    vertical-align: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background-color: transparent;
-    border: 1px solid transparent;
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border-radius: 0.25rem;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-        border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+.content__title li:has(a) {
+  border: 1px solid #214be0;
+  background-color: #fafafa;
 }
-
-a.btn:hover {
-    color: #212529;
-    text-decoration: none;
+.content__title a {
+  text-decoration: none;
+  color: #214be0;
+  display: block;
 }
-
-a.btn:focus,
-a.btn.focus {
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+.content__table {
+  padding-top: 1rem;
+  padding-bottom: 4rem;
+  display: flex;
+  justify-content: center; /* テーブルを水平中央に配置 */
+  align-items: center;
 }
-
-a.btn.disabled,
-a.btn:disabled {
-    opacity: 0.65;
+.content__table-container {
+  margin: 0;
+  width: 1000px;
+  border-collapse: collapse; /* セルの境界線を結合 */
 }
+.content__table-container th,
+.content__table-container td {
+  border: none; /* すべての境界線を非表示 */
+  border-bottom: 1px solid #000;
+  padding: 15px;
+  text-align: left;
+}
+.content__table-container th {
+  border-top: 1px solid #000;
+}
+.content__table-container td {
+  white-space: normal;
+}
+.content__table-btn {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  width: 200px;
+  border-radius: 5px;
+  background: #214be0;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  font-size: 0.8rem;
+}/*# sourceMappingURL=index.css.map */

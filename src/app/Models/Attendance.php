@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use DateInterval;
 use DateTime;
 use DateTimeImmutable;
+use Carbon\Carbon;
 
 class Attendance extends Model
 {
@@ -25,7 +26,7 @@ class Attendance extends Model
     }
 
     /**
-     * 出勤・退勤IDに関連する全ての休憩時間の合計を計算する
+     * 出勤・退勤IDに関連する全ての休憩時間の合計を計算する。
      *
      * @param int $attendanceId 出勤・退勤ID
      * @param Illuminate\Database\Eloquent\Collection $breaktimes 出勤・退勤IDに紐づく休憩時間レコードの集合
@@ -48,10 +49,10 @@ class Attendance extends Model
     }
 
     /**
-     * 二つのDateIntervalオブジェクトを合計する
+     * 二つのDateIntervalオブジェクトを合計する。
      *
-     * @param DateInterval $interval1 最初の時間間隔
-     * @param DateInterval $interval2 二番目の時間間隔
+     * @param DateInterval $interval1 合計休憩時間
+     * @param DateInterval $interval2 追加用の休憩時時間
      * @return DateInterval 二つの間隔の合計を示すDateIntervalオブジェクト
      */
     private function addDateIntervals($interval1, $interval2)
@@ -62,7 +63,7 @@ class Attendance extends Model
     }
 
     /**
-     * 指定された出勤開始時刻、出勤終了時刻、休憩時間をもとに勤務時間を計算する
+     * 指定された出勤開始時刻、出勤終了時刻、休憩時間をもとに勤務時間を計算する。
      *
      * @param string $startTime 勤務開始時刻（'HH:MM:SS'形式）
      * @param string $endTime 勤務終了時刻（'HH:MM:SS'形式）
@@ -85,7 +86,7 @@ class Attendance extends Model
     }
 
     /**
-     * 二つの時刻間の時間差をDateIntervalオブジェクトとして返す
+     * 二つの時刻間の時間差をDateIntervalオブジェクトとして返す。
      *
      * @param string $startTime 開始時刻（'HH:MM:SS'形式）
      * @param string $endTime 終了時刻（'HH:MM:SS'形式）
@@ -99,7 +100,7 @@ class Attendance extends Model
     }
 
     /**
-     * DateIntervalオブジェクトを秒単位で表現する
+     * DateIntervalオブジェクトを秒単位で表現する。
      *
      * @param DateInterval $interval DateIntervalオブジェクト
      * @return int インターバルを秒単位で表した値
@@ -107,5 +108,42 @@ class Attendance extends Model
     private function calculateDiffInSeconds($interval)
     {
         return ($interval->h * 3600) + ($interval->i * 60) + $interval->s;
+    }
+
+    /**
+     * 指定された年と月に基づいて、勤怠レコードのコレクションを生成する。
+     * 既存のレコードがない日付には、デフォルト値を持つ新しいレコードが作成される。
+     *
+     * @param \Illuminate\Support\Collection $records 既に取得されている勤怠レコードのコレクション
+     * @param int $targetYear 対象の年
+     * @param int $targetMonth 対象の月
+     * @return \Illuminate\Support\Collection 日付順にソートされた勤怠レコード（全日付分）のコレクション
+     */
+    public static function getAllDateRecords($records, $targetYear, $targetMonth)
+    {
+        $startDate = Carbon::create($targetYear, $targetMonth, 1)->format('Y-m-d');
+        $endDate = Carbon::create($targetYear, $targetMonth, 1)->endOfMonth()->format('Y-m-d');
+
+        // 月初から月末までの日付オブジェクトを取得（検索で使用）
+        $period = Carbon::parse($startDate)->daysUntil($endDate);
+
+        // 月初から月末までの勤怠レコードを作成（ビューで使用）
+        foreach ($period as $date) {
+            $dateString = $date->format('Y-m-d');
+            if (!$records->contains('date', $dateString)) {
+                $records->push(new Attendance([
+                    'employee_id' => 0,
+                    'date' => $dateString,
+                    'start_time' => '00:00:00',
+                    'end_time' => '00:00:00',
+                    'work_status' => 6
+                ]));
+            }
+        }
+
+        // 日付順にソート
+        $records = $records->sortBy('date');
+
+        return $records;
     }
 }

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Attendance;
-use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
@@ -38,29 +37,8 @@ class AttendanceController extends Controller
             $workedTimes[$attendance->id] = $workedTime;
         }
 
-        // 当該月の勤怠レコード（月初から月末分）を作成
-        $startDate = Carbon::create($setYear, $setMonth, 1)->format('Y-m-d');
-        $endDate = Carbon::create($setYear, $setMonth, 1)->endOfMonth()->format('Y-m-d');
-
-        // 月初から月末までの日付オブジェクトを取得（検索で使用）
-        $period = Carbon::parse($startDate)->daysUntil($endDate);
-
-        // 月初から月末までの勤怠レコードを作成（ビューで使用）
-        foreach ($period as $date) {
-            $dateString = $date->format('Y-m-d');
-            if (!$results->contains('date', $dateString)) {
-                $results->push(new Attendance([
-                    'employee_id' => 0,
-                    'date' => $dateString,
-                    'start_time' => '00:00:00',
-                    'end_time' => '00:00:00',
-                    'work_status' => 6
-                ]));
-            }
-        }
-
-        // 日付順にソート
-        $results = $results->sortBy('date');
+        // 月初から月末までの勤怠レコードを作成
+        $results = Attendance::getAllDateRecords($results, $setYear, $setMonth);
 
         return view('index', compact('results', 'breakTimes', 'workedTimes'));
     }

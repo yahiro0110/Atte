@@ -43,8 +43,20 @@
                         <td>{{ $attendance->date }}</td>
                         <td>{{ $attendance->start_time }}</td>
                         <td>{{ $attendance->end_time }}</td>
-                        <td>{{ $breakTimes[$attendance->id] }}</td>
-                        <td>{{ $workedTimes[$attendance->id] }}</td>
+                        <td>
+                            @if ($attendance->work_status == 6)
+                                00:00:00
+                            @else
+                                {{ $breakTimes[$attendance->id] }}
+                            @endif
+                        </td>
+                        <td>
+                            @if ($attendance->work_status == 6)
+                                00:00:00
+                            @else
+                                {{ $workedTimes[$attendance->id] }}
+                            @endif
+                        </td>
                         <td>
                             <a class="content__table-btn" href="#">編集</a>
                         </td>

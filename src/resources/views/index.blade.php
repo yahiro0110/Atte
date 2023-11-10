@@ -40,7 +40,7 @@
                 </tr>
                 @foreach ($results as $attendance)
                     <tr>
-                        <td>{{ $attendance->date }}</td>
+                        <td>{{ \Carbon\Carbon::parse($attendance->date)->locale('ja')->isoFormat('M/D(dd)') }}</td>
                         <td>{{ $attendance->start_time }}</td>
                         <td>{{ $attendance->end_time }}</td>
                         <td>

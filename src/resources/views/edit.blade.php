@@ -40,9 +40,12 @@
                     <label for="">休憩時間</label>
                     <span>{{ $breakTime }}</span>
                     <span class="content__form-inputarea-allow">&#9654;</span>
-                    <input type="text" value="{{ $breakTime }}" readonly>
+                    <input type="text" value="{{ $breakTime }}" readonly class="calculatetimes">
                 </div>
                 <div class="content__form-inputsubarea">
+                    <div class="content__form-inputsubarea-button">
+                        <button type="button" id="add-break-time">休憩時間追加</button>
+                    </div>
                     @if ($results->breaktimes)
                         @php
                             $breakTimeCount = 0;
@@ -68,4 +71,5 @@
             </form>
         </div>
     </div>
+    <script src="{{ asset('js/breakTimeCalculator.js') }}"></script>
 @endsection

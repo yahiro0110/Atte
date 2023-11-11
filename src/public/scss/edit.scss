@@ -77,6 +77,10 @@
             align-items: center;
             flex-direction: column;
             font-size: 1rem;
+            &-button {
+                padding-bottom: 1rem;
+                margin-right: auto;
+            }
             &-time {
                 display: flex;
                 justify-content: space-between;
@@ -85,7 +89,7 @@
                 width: 350px;
                 font-size: 1rem;
                 label {
-                    padding-right: 0.75rem;
+                    width: 70px;
                     font-weight: bold;
                 }
                 input {

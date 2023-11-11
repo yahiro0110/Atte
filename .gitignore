@@ -1,7 +1,6 @@
 .DS_Store
 !.gitkeep
 .vscode/settings.json
-.vscode/launch.json
 docker/mysql/data/*
 src/resources/views/test.blade.php
 src/public/scss/test.scss

@@ -62,11 +62,9 @@
                                     $breakTimeCount++;
                                 @endphp
                                 <label for="">{{ $breakTimeCount }}回目</label>
-                                <input type="text" name="breaktime_start_time[{{ $breaktime->id }}]"
-                                    value="{{ $breaktime->start_time }}">
+                                <input type="text" name="breaktime_start_time[]" value="{{ $breaktime->start_time }}">
                                 <span>-</span>
-                                <input type="text" name="breaktime_end_time[{{ $breaktime->id }}]"
-                                    value="{{ $breaktime->end_time }}">
+                                <input type="text" name="breaktime_end_time[]" value="{{ $breaktime->end_time }}">
                                 <button type="button" class="delete-btn" value="{{ $breaktime->id }}">削除</button>
                             </div>
                         @endforeach

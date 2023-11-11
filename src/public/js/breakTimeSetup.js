@@ -64,10 +64,11 @@ function createBreakTimeArea(breakNumber) {
     const div = document.createElement("div");
     div.className = "content__form-inputsubarea-time";
     div.innerHTML = `
+        <input type="hidden" name="breaktime_ids[]" value="0">
         <label for="">${breakNumber}回目<br>(新規)</label>
-        <input type="text" value="00:00:00" />
+        <input type="text" name="breaktime_start_time[]" value="00:00:00" />
         <span>-</span>
-        <input type="text" value="00:00:00" />
+        <input type="text" name="breaktime_end_time[]" value="00:00:00" />
         <button type="button">削除</button>
     `; // HTMLコンテンツの設定
     return div;

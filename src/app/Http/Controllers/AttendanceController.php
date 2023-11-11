@@ -121,13 +121,25 @@ class AttendanceController extends Controller
         $attendance->save();
 
         // 休憩レコードの更新
+        $breaktimeIds = $request->input('breaktime_ids');
         $startTimes = $request->input('breaktime_start_time');
         $endTimes = $request->input('breaktime_end_time');
-        foreach ($request->input('breaktime_ids') as $breaktime_id) {
-            $breaktime = Breaktime::findOrFail($breaktime_id);
-            $breaktime->start_time = $startTimes[$breaktime_id];
-            $breaktime->end_time = $endTimes[$breaktime_id];
-            $breaktime->save();
+        for ($i = 0; $i < count($breaktimeIds); $i++) {
+            // 休憩レコードが存在しない場合は新規作成
+            if ($breaktimeIds[$i] == 0) {
+                Breaktime::create(
+                    [
+                        'attendance_id' => $id,
+                        'start_time' => $startTimes[$i],
+                        'end_time' => $endTimes[$i],
+                    ]
+                );
+            } else {
+                $breaktime = Breaktime::findOrFail($breaktimeIds[$i]);
+                $breaktime->start_time = $startTimes[$i];
+                $breaktime->end_time = $endTimes[$i];
+                $breaktime->save();
+            }
         }
 
         return redirect()->route('attendance.index', ['id' => $request->input('employee_id')])->with('message', '勤怠情報を更新しました。');

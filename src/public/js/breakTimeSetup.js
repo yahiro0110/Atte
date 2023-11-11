@@ -44,6 +44,10 @@ function addBreakTime() {
         ".content__form-inputsubarea-time"
     ).length; // 既存の休憩時間エリアの数
     const newBreakTime = createBreakTimeArea(breakCount + 1); // 新しい休憩時間エリアの作成
+    newBreakTime.querySelector("button").onclick = function () {
+        newBreakTime.remove(); // 削除ボタンのクリック時の処理
+        updateTotalTime(); // 合計時間の更新
+    };
     document
         .querySelector(".content__form-inputsubarea")
         .appendChild(newBreakTime); // 新しいエリアの追加
@@ -64,7 +68,7 @@ function createBreakTimeArea(breakNumber) {
         <input type="text" value="00:00:00" />
         <span>-</span>
         <input type="text" value="00:00:00" />
-        <button type="button" class="delete-btn">削除</button>
+        <button type="button">削除</button>
     `; // HTMLコンテンツの設定
     return div;
 }

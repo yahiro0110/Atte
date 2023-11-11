@@ -23,20 +23,21 @@
             {{ \Carbon\Carbon::parse($results->date)->locale('ja')->isoFormat('Y年M月D日(dd)') }}の編集
         </div>
         <div class="content__form">
-            <form action="" method="post">
-
+            <form action="{{ route('attendance.update', ['id' => $id]) }}" method="post">
+                @csrf
+                <input type="hidden" name="employee_id" value="{{ $results->employee_id }}">
                 <div class='content__form-title'>勤務時間の調整</div>
                 <div class='content__form-inputarea'>
                     <label for="">勤務開始</label>
                     <span>{{ $results->start_time }}</span>
                     <span class="content__form-inputarea-allow">&#9654;</span>
-                    <input type="text" value="{{ $results->start_time }}">
+                    <input type="text" name="start_time" value="{{ $results->start_time }}">
                 </div>
                 <div class='content__form-inputarea'>
                     <label for="">勤務終了</label>
                     <span>{{ $results->end_time }}</span>
                     <span class="content__form-inputarea-allow">&#9654;</span>
-                    <input type="text" value="{{ $results->end_time }}">
+                    <input type="text" name="end_time" value="{{ $results->end_time }}">
                 </div>
 
                 <div class='content__form-title'>休憩時間の調整</div>
@@ -56,13 +57,16 @@
                         @endphp
                         @foreach ($results->breaktimes as $breaktime)
                             <div class="content__form-inputsubarea-time">
+                                <input type="hidden" name="breaktime_ids[]" value="{{ $breaktime->id }}">
                                 @php
                                     $breakTimeCount++;
                                 @endphp
                                 <label for="">{{ $breakTimeCount }}回目</label>
-                                <input type="text" value="{{ $breaktime->start_time }}">
+                                <input type="text" name="breaktime_start_time[{{ $breaktime->id }}]"
+                                    value="{{ $breaktime->start_time }}">
                                 <span>-</span>
-                                <input type="text" value="{{ $breaktime->end_time }}">
+                                <input type="text" name="breaktime_end_time[{{ $breaktime->id }}]"
+                                    value="{{ $breaktime->end_time }}">
                                 <button type="button" class="delete-btn" value="{{ $breaktime->id }}">削除</button>
                             </div>
                         @endforeach

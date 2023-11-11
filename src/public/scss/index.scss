@@ -4,6 +4,34 @@
     transform: translateX(-50%);
 }
 
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/*--------------------------------------------------
+    アラートメッセージエリア
+    --------------------------------------------------*/
+.alert {
+    &__success {
+        padding: 20px 30px;
+        border-color: #badbcc;
+        background-color: #d1e7dd;
+        color: #0f5132;
+        animation: fadeOut 8s;
+        animation-fill-mode: forwards; /* アニメーション終了後も最終フレームを維持 */
+        position: absolute; /* 絶対位置指定 */
+        top: 0px; /* 他のコンテンツの上に配置 */
+        left: 0; /* 他のコンテンツの左に配置 */
+        width: 100%; /* 横幅を親要素いっぱいに */
+    }
+}
+
 .content {
     display: flex;
     flex-direction: column;

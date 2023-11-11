@@ -13,6 +13,13 @@
 @endsection
 
 @section('content')
+    <div class="alert">
+        @if (session('message'))
+            <div class="alert__success">
+                {{ session('message') }}
+            </div>
+        @endif
+    </div>
     <div class="content">
         <div class="content__message">HOGEHOGEさん、毎日の勤怠管理は大切な仕事です。記録を忘れずに入力しましょう。</div>
         <div class="content__title">

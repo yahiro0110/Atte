@@ -117,9 +117,10 @@ class Attendance extends Model
      * @param \Illuminate\Support\Collection $records 既に取得されている勤怠レコードのコレクション
      * @param int $targetYear 対象の年
      * @param int $targetMonth 対象の月
+     * @param int $employeeId 対象の従業員ID
      * @return \Illuminate\Support\Collection 日付順にソートされた勤怠レコード（全日付分）のコレクション
      */
-    public static function getAllDateRecords($records, $targetYear, $targetMonth)
+    public static function getAllDateRecords($records, $targetYear, $targetMonth, $employeeId)
     {
         $startDate = Carbon::create($targetYear, $targetMonth, 1)->format('Y-m-d');
         $endDate = Carbon::create($targetYear, $targetMonth, 1)->endOfMonth()->format('Y-m-d');
@@ -132,7 +133,7 @@ class Attendance extends Model
             $dateString = $date->format('Y-m-d');
             if (!$records->contains('date', $dateString)) {
                 $records->push(new Attendance([
-                    'employee_id' => $records[0]->employee_id,
+                    'employee_id' => $employeeId,
                     'date' => $dateString,
                     'start_time' => '00:00:00',
                     'end_time' => '00:00:00',

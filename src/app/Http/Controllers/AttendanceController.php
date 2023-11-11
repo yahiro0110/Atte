@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Attendance;
+use App\Models\Breaktime;
 
 class AttendanceController extends Controller
 {
@@ -38,7 +39,7 @@ class AttendanceController extends Controller
         }
 
         // 月初から月末までの勤怠レコードを作成
-        $results = Attendance::getAllDateRecords($results, $setYear, $setMonth);
+        $results = Attendance::getAllDateRecords($results, $setYear, $setMonth, $id);
 
         return view('index', compact('results', 'breakTimes', 'workedTimes'));
     }
@@ -111,10 +112,25 @@ class AttendanceController extends Controller
      * @param  \App\Models\Attendance  $attendance
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Attendance $attendance)
+    public function update(Request $request, $id)
     {
-        // Unused variables $request and $attendance removed
-        //
+        // 出勤・退勤レコードの更新
+        $attendance = Attendance::findOrFail($id);
+        $attendance->start_time = $request->input('start_time');
+        $attendance->end_time = $request->input('end_time');
+        $attendance->save();
+
+        // 休憩レコードの更新
+        $startTimes = $request->input('breaktime_start_time');
+        $endTimes = $request->input('breaktime_end_time');
+        foreach ($request->input('breaktime_ids') as $breaktime_id) {
+            $breaktime = Breaktime::findOrFail($breaktime_id);
+            $breaktime->start_time = $startTimes[$breaktime_id];
+            $breaktime->end_time = $endTimes[$breaktime_id];
+            $breaktime->save();
+        }
+
+        return redirect()->route('attendance.index', ['id' => $request->input('employee_id')])->with('message', '勤怠情報を更新しました。');
     }
 
     /**

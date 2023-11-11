@@ -4,6 +4,10 @@
     日付編集
 @endsection
 
+@section('X-CSRF-TOKEN')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
+
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/edit.css') }}">
 @endsection
@@ -59,7 +63,7 @@
                                 <input type="text" value="{{ $breaktime->start_time }}">
                                 <span>-</span>
                                 <input type="text" value="{{ $breaktime->end_time }}">
-                                <button type="button" value="{{ $breaktime->id }}">削除</button>
+                                <button type="button" class="delete-btn" value="{{ $breaktime->id }}">削除</button>
                             </div>
                         @endforeach
                     @endif
@@ -71,5 +75,5 @@
             </form>
         </div>
     </div>
-    <script src="{{ asset('js/breakTimeCalculator.js') }}"></script>
+    <script src="{{ asset('js/breakTimeSetup.js') }}"></script>
 @endsection

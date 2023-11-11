@@ -78,8 +78,11 @@ class BreaktimeController extends Controller
      * @param  \App\Models\Breaktime  $breaktime
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Breaktime $breaktime)
+    public function destroy($id)
     {
-        //
+        $breaktime = Breaktime::findOrFail($id);
+        $breaktime->delete();
+
+        return response()->json('Breaktime deleted successfully');
     }
 }

@@ -132,7 +132,7 @@ class Attendance extends Model
             $dateString = $date->format('Y-m-d');
             if (!$records->contains('date', $dateString)) {
                 $records->push(new Attendance([
-                    'employee_id' => 0,
+                    'employee_id' => $records[0]->employee_id,
                     'date' => $dateString,
                     'start_time' => '00:00:00',
                     'end_time' => '00:00:00',

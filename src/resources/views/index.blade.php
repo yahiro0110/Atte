@@ -47,16 +47,16 @@
                         <td class="content__table-td-date">
                             {{ \Carbon\Carbon::parse($attendance->date)->locale('ja')->isoFormat('M/D(dd)') }}
                         </td>
-                        <td lass="content__table-td-time">{{ $attendance->start_time }}</td>
-                        <td lass="content__table-td-time">{{ $attendance->end_time }}</td>
-                        <td lass="content__table-td-time">
+                        <td class="content__table-td-time">{{ $attendance->start_time }}</td>
+                        <td class="content__table-td-time">{{ $attendance->end_time }}</td>
+                        <td class="content__table-td-time">
                             @if ($attendance->work_status == 6)
                                 00:00:00
                             @else
                                 {{ $breakTimes[$attendance->id] }}
                             @endif
                         </td>
-                        <td lass="content__table-td-time">
+                        <td class="content__table-td-time">
                             @if ($attendance->work_status == 6)
                                 00:00:00
                             @else
@@ -64,7 +64,14 @@
                             @endif
                         </td>
                         <td>
-                            <a class="content__table-btn" href="#">編集</a>
+                            @if (@isset($attendance->id))
+                                <a href="{{ route('attendance.show', ['id' => $attendance->id]) }}"
+                                    class="content__table-btn">編集</a>
+                            @else
+                                <a href="{{ route('attendance.show', ['id' => 0, 'employee_id' => $attendance->employee_id, 'date' => $attendance->date, 'work_status' => $attendance->work_status]) }}"
+                                    class="content__table-btn">編集</a>
+                            @endif
+
                         </td>
                     </tr>
                 @endforeach

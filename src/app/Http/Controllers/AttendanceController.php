@@ -71,10 +71,25 @@ class AttendanceController extends Controller
      * @param  \App\Models\Attendance  $attendance
      * @return \Illuminate\Http\Response
      */
-    public function show(Attendance $attendance)
+    public function show($id, Request $request)
     {
-        // Unused variable $attendance removed
-        //
+        if ($id == 0) {
+            $results = new Attendance(
+                [
+                    'employee_id' => $request->input('employee_id'),
+                    'date' => $request->input('date'),
+                    'start_time' => '00:00:00',
+                    'end_time' => '00:00:00',
+                    'work_status' => $request->input('work_status'),
+                ]
+            );
+            $breakTime = '00:00:00';
+        } else {
+            $results = Attendance::with('breaktimes')->where('id', $id)->first();
+            $breakTime = $results->calculateTotalBreakTimes($id, $results->breaktimes);
+        }
+
+        return view('edit', compact('id', 'results', 'breakTime'));
     }
 
     /**

@@ -18,3 +18,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [EmployeeController::class, 'show'])->name('employee.home');
 Route::get('/attendance/{id}', [AttendanceController::class, 'index'])->name('attendance.index');
+Route::get('/edit/{id}', [AttendanceController::class, 'show'])->name('attendance.show');

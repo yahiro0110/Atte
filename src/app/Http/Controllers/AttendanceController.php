@@ -115,10 +115,24 @@ class AttendanceController extends Controller
     public function update(Request $request, $id)
     {
         // 出勤・退勤レコードの更新
-        $attendance = Attendance::findOrFail($id);
-        $attendance->start_time = $request->input('start_time');
-        $attendance->end_time = $request->input('end_time');
-        $attendance->save();
+        if ($id == 0) {
+            $attendance = Attendance::create(
+                [
+                    'employee_id' => $request->input('employee_id'),
+                    'date' => $request->input('date'),
+                    'start_time' => $request->input('start_time'),
+                    'end_time' => $request->input('end_time'),
+                    'work_status' => Attendance::setWorkStatus($request->input('start_time'), $request->input('end_time')),
+                ]
+            );
+            $id = $attendance->id;
+        } else {
+            $attendance = Attendance::findOrFail($id);
+            $attendance->start_time = $request->input('start_time');
+            $attendance->end_time = $request->input('end_time');
+            $attendance->work_status = Attendance::setWorkStatus($request->input('start_time'), $request->input('end_time'));
+            $attendance->save();
+        }
 
         // 休憩レコードの更新
         $breaktimeIds = $request->input('breaktime_ids');

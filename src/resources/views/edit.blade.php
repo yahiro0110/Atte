@@ -26,6 +26,7 @@
             <form action="{{ route('attendance.update', ['id' => $id]) }}" method="post">
                 @csrf
                 <input type="hidden" name="employee_id" value="{{ $results->employee_id }}">
+                <input type="hidden" name="date" value="{{ $results->date }}">
                 <div class='content__form-title'>勤務時間の調整</div>
                 <div class='content__form-inputarea'>
                     <label for="">勤務開始</label>

@@ -147,4 +147,33 @@ class Attendance extends Model
 
         return $records;
     }
+
+    /**
+     * 指定された勤務開始時刻と終了時刻に基づいて勤務状態を決定する。
+     * 勤務なし、退勤、出勤の3つの状態がある。
+     *
+     * @param string $startTime 勤務の開始時刻（形式：'HH:MM:SS'）
+     * @param string $endTime   勤務の終了時刻（形式：'HH:MM:SS'）
+     *
+     * @return int 勤務状態を表す数値
+     *             勤務なしの場合は6、退勤の場合は4、出勤の場合は1を返す
+     */
+    public static function setWorkStatus($startTime, $endTime)
+    {
+        $noWork = 6;
+        $clockOut = 4;
+        $clockIn = 1;
+        // 勤務なしの場合
+        if ($startTime === '00:00:00' && $endTime === '00:00:00') {
+            return $noWork;
+        }
+        // 退勤の場合
+        if ($startTime !== '00:00:00' && $endTime !== '00:00:00') {
+            return $clockOut;
+        }
+        // 出勤の場合
+        if ($startTime !== '00:00:00' && $endTime === '00:00:00') {
+            return $clockIn;
+        }
+    }
 }

@@ -10,6 +10,7 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/edit.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 @endsection
 
 @section('nav')
@@ -32,13 +33,13 @@
                     <label for="">勤務開始</label>
                     <span>{{ $results->start_time }}</span>
                     <span class="content__form-inputarea-allow">&#9654;</span>
-                    <input type="text" name="start_time" value="{{ $results->start_time }}">
+                    <input type="time" name="start_time" value="{{ $results->start_time }}">
                 </div>
                 <div class='content__form-inputarea'>
                     <label for="">勤務終了</label>
                     <span>{{ $results->end_time }}</span>
                     <span class="content__form-inputarea-allow">&#9654;</span>
-                    <input type="text" name="end_time" value="{{ $results->end_time }}">
+                    <input type="time" name="end_time" value="{{ $results->end_time }}">
                 </div>
 
                 <div class='content__form-title'>休憩時間の調整</div>
@@ -46,7 +47,7 @@
                     <label for="">休憩時間</label>
                     <span>{{ $breakTime }}</span>
                     <span class="content__form-inputarea-allow">&#9654;</span>
-                    <input type="text" value="{{ $breakTime }}" readonly class="calculatetimes">
+                    <input type="time" value="{{ $breakTime }}" readonly class="calculatetimes">
                 </div>
                 <div class="content__form-inputsubarea">
                     <div class="content__form-inputsubarea-button">
@@ -63,9 +64,9 @@
                                     $breakTimeCount++;
                                 @endphp
                                 <label for="">{{ $breakTimeCount }}回目</label>
-                                <input type="text" name="breaktime_start_time[]" value="{{ $breaktime->start_time }}">
+                                <input type="time" name="breaktime_start_time[]" value="{{ $breaktime->start_time }}">
                                 <span>-</span>
-                                <input type="text" name="breaktime_end_time[]" value="{{ $breaktime->end_time }}">
+                                <input type="time" name="breaktime_end_time[]" value="{{ $breaktime->end_time }}">
                                 <button type="button" class="delete-btn" value="{{ $breaktime->id }}">削除</button>
                             </div>
                         @endforeach

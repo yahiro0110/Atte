@@ -1,9 +1,46 @@
+/*--------------------------------------------------
+input=timeのカスタマイズ（アイコンを非表示に設定）
+--------------------------------------------------*/
+input[type="time"] {
+    position: relative;
+    padding-left: 20px;
+}
+
+input[type="time"]:after {
+    font-family: FontAwesome;
+    content: "\f017";
+    color: #fff;
+}
+
+input[type="time"].calculatetimes:after {
+    color: #f2f2f2;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+    color: transparent;
+    background: transparent;
+    z-index: 100;
+}
+
+/*--------------------------------------------------
+ヘッダー
+--------------------------------------------------*/
 .header {
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
 }
 
+/*--------------------------------------------------
+コンテンツ
+--------------------------------------------------*/
 .content {
     display: flex;
     flex-direction: column;
@@ -11,9 +48,8 @@
     padding-top: 100px;
     overflow: auto;
     height: 94vh;
-    /*--------------------------------------------------
-    メッセージエリア
-    --------------------------------------------------*/
+    /* メッセージエリア
+    ----------------------------------------*/
     &__message {
         padding-top: 1rem;
         padding-bottom: 1rem;
@@ -26,9 +62,8 @@
         padding-top: 2rem;
         width: 500px;
     }
-    /*--------------------------------------------------
-    勤務時間の調整エリア
-    --------------------------------------------------*/
+    /* 勤務時間の調整エリア
+    ----------------------------------------*/
     &__form {
         display: flex;
         align-items: center;

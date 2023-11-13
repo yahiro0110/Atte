@@ -66,9 +66,9 @@ function createBreakTimeArea(breakNumber) {
     div.innerHTML = `
         <input type="hidden" name="breaktime_ids[]" value="0">
         <label for="">${breakNumber}回目<br>(新規)</label>
-        <input type="text" name="breaktime_start_time[]" value="00:00:00" />
+        <input type="time" name="breaktime_start_time[]" value="00:00:00" />
         <span>-</span>
-        <input type="text" name="breaktime_end_time[]" value="00:00:00" />
+        <input type="time" name="breaktime_end_time[]" value="00:00:00" />
         <button type="button">削除</button>
     `; // HTMLコンテンツの設定
     return div;
@@ -130,7 +130,7 @@ function handleResponse(response) {
  * @param {HTMLElement} div - 休憩時間エリアのdiv要素
  */
 function addInputEventListeners(div) {
-    div.querySelectorAll('input[type="text"]').forEach((input) => {
+    div.querySelectorAll('input[type="time"]').forEach((input) => {
         input.addEventListener("input", updateTotalTime); // 入力イベントリスナーの追加
     });
 }
@@ -150,8 +150,8 @@ function updateTotalTime() {
  */
 function timeToSeconds(time) {
     // 時間文字列を分解し、秒単位に変換
-    const [hours, minutes, seconds] = time.split(":").map(parseFloat);
-    return hours * 3600 + minutes * 60 + seconds;
+    const [hours, minutes] = time.split(":").map(parseFloat);
+    return hours * 3600 + minutes * 60;
 }
 
 /**
@@ -165,7 +165,7 @@ function calculateDifferences() {
         .querySelectorAll(".content__form-inputsubarea-time")
         .forEach((div) => {
             // 各休憩時間エリアの開始時間と終了時間を取得
-            const inputs = div.querySelectorAll('input[type="text"]');
+            const inputs = div.querySelectorAll('input[type="time"]');
             const startTime = timeToSeconds(inputs[0].value);
             const endTime = timeToSeconds(inputs[1].value);
             // 差分を計算
@@ -177,8 +177,7 @@ function calculateDifferences() {
     // 合計秒数をHH:MM:SS形式に変換
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
     return `${hours.toString().padStart(2, "0")}:${minutes
         .toString()
-        .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+        .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
 }

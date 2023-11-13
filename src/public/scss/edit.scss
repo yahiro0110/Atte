@@ -4,29 +4,26 @@ input=timeのカスタマイズ（アイコンを非表示に設定）
 input[type="time"] {
     position: relative;
     padding-left: 20px;
-}
-
-input[type="time"]:after {
-    font-family: FontAwesome;
-    content: "\f017";
-    color: #fff;
-}
-
-input[type="time"].calculatetimes:after {
-    color: #f2f2f2;
-}
-
-input[type="time"]::-webkit-calendar-picker-indicator {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: auto;
-    height: auto;
-    color: transparent;
-    background: transparent;
-    z-index: 100;
+    &::after {
+        font-family: FontAwesome;
+        content: "\f017";
+        color: #fff;
+    }
+    &.calculatetimes::after {
+        color: #f2f2f2;
+    }
+    &::-webkit-calendar-picker-indicator {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: auto;
+        height: auto;
+        color: transparent;
+        background: transparent;
+        z-index: 100;
+    }
 }
 
 /*--------------------------------------------------

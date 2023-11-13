@@ -6,17 +6,14 @@ input[type=time] {
   position: relative;
   padding-left: 20px;
 }
-
-input[type=time]:after {
+input[type=time]::after {
   font-family: FontAwesome;
   content: "\f017";
   color: #fff;
 }
-
-input[type=time].calculatetimes:after {
+input[type=time].calculatetimes::after {
   color: #f2f2f2;
 }
-
 input[type=time]::-webkit-calendar-picker-indicator {
   position: absolute;
   top: 0;

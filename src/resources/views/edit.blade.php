@@ -23,7 +23,7 @@
             {{ \Carbon\Carbon::parse($results->date)->locale('ja')->isoFormat('Y年M月D日(dd)') }}の編集
         </div>
         <div class="content__form">
-            <form action="{{ route('attendance.update', ['id' => $id]) }}" method="post">
+            <form action="{{ route('attendance.update', ['id' => $attendanceId]) }}" method="post">
                 @csrf
                 <input type="hidden" name="employee_id" value="{{ $results->employee_id }}">
                 <input type="hidden" name="date" value="{{ $results->date }}">

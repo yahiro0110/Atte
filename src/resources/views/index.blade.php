@@ -54,20 +54,24 @@
                         <td class="content__table-td-date">
                             {{ \Carbon\Carbon::parse($attendance->date)->locale('ja')->isoFormat('M/D(dd)') }}
                         </td>
-                        <td class="content__table-td-time">{{ $attendance->start_time }}</td>
-                        <td class="content__table-td-time">{{ $attendance->end_time }}</td>
+                        <td class="content__table-td-time">
+                            {{ \Carbon\Carbon::parse($attendance->start_time)->format('H:i') }}
+                        </td>
+                        <td class="content__table-td-time">
+                            {{ \Carbon\Carbon::parse($attendance->end_time)->format('H:i') }}
+                        </td>
                         <td class="content__table-td-time">
                             @if ($attendance->work_status == 6)
-                                00:00:00
+                                {{ \Carbon\Carbon::parse('00:00:00')->format('H:i') }}
                             @else
-                                {{ $breakTimes[$attendance->id] }}
+                                {{ \Carbon\Carbon::parse($breakTimes[$attendance->id])->format('H:i') }}
                             @endif
                         </td>
                         <td class="content__table-td-time">
                             @if ($attendance->work_status == 6)
-                                00:00:00
+                                {{ \Carbon\Carbon::parse('00:00:00')->format('H:i') }}
                             @else
-                                {{ $workedTimes[$attendance->id] }}
+                                {{ \Carbon\Carbon::parse($workedTimes[$attendance->id])->format('H:i') }}
                             @endif
                         </td>
                         <td>

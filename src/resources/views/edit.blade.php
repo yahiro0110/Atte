@@ -10,7 +10,6 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/edit.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 @endsection
 
 @section('nav')
@@ -31,13 +30,13 @@
                 <div class='content__form-title'>勤務時間の調整</div>
                 <div class='content__form-inputarea'>
                     <label for="">勤務開始</label>
-                    <span>{{ $results->start_time }}</span>
+                    <span>{{ \Carbon\Carbon::parse($results->start_time)->format('H:i') }}</span>
                     <span class="content__form-inputarea-allow">&#9654;</span>
                     <input type="time" name="start_time" value="{{ $results->start_time }}">
                 </div>
                 <div class='content__form-inputarea'>
                     <label for="">勤務終了</label>
-                    <span>{{ $results->end_time }}</span>
+                    <span>{{ \Carbon\Carbon::parse($results->end_time)->format('H:i') }}</span>
                     <span class="content__form-inputarea-allow">&#9654;</span>
                     <input type="time" name="end_time" value="{{ $results->end_time }}">
                 </div>
@@ -45,7 +44,7 @@
                 <div class='content__form-title'>休憩時間の調整</div>
                 <div class='content__form-inputarea breaktime'>
                     <label for="">休憩時間</label>
-                    <span>{{ $breakTime }}</span>
+                    <span>{{ \Carbon\Carbon::parse($breakTime)->format('H:i') }}</span>
                     <span class="content__form-inputarea-allow">&#9654;</span>
                     <input type="time" value="{{ $breakTime }}" readonly class="calculatetimes">
                 </div>

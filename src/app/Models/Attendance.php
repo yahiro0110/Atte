@@ -13,6 +13,15 @@ class Attendance extends Model
 {
     use HasFactory;
 
+    const WORK_STATUSES = [
+        'clockIn' => 1,      // 出勤
+        'onBreak' => 2,      // 休憩中
+        'offBreak' => 3,     // 休憩終了
+        'clockOut' => 4,     // 退勤
+        'noClockOut' => 5,   // 退勤打刻なし
+        'noWork' => 6        // 勤務なし
+    ];
+
     protected $fillable = ['employee_id', 'date', 'start_time', 'end_time', 'work_status'];
 
     public function employee()
@@ -137,7 +146,7 @@ class Attendance extends Model
                     'date' => $dateString,
                     'start_time' => '00:00:00',
                     'end_time' => '00:00:00',
-                    'work_status' => 6
+                    'work_status' => self::WORK_STATUSES['noWork']
                 ]));
             }
         }
@@ -160,20 +169,17 @@ class Attendance extends Model
      */
     public static function setWorkStatus($startTime, $endTime)
     {
-        $noWork = 6;
-        $clockOut = 4;
-        $clockIn = 1;
         // 勤務なしの場合
         if ($startTime === '00:00:00' && $endTime === '00:00:00') {
-            return $noWork;
+            return self::WORK_STATUSES['noWork'];
         }
         // 退勤の場合
         if ($startTime !== '00:00:00' && $endTime !== '00:00:00') {
-            return $clockOut;
+            return self::WORK_STATUSES['clockOut'];
         }
         // 出勤の場合
         if ($startTime !== '00:00:00' && $endTime === '00:00:00') {
-            return $clockIn;
+            return self::WORK_STATUSES['clockIn'];
         }
     }
 }

@@ -73,14 +73,14 @@ class BreaktimeController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 指定された休憩レコードを削除する。
      *
-     * @param  \App\Models\Breaktime  $breaktime
-     * @return \Illuminate\Http\Response
+     * @param  int $breaktimeId  削除する休憩レコードのID
+     * @return \Illuminate\Http\JsonResponse 削除成功時のJSONレスポンス
      */
-    public function destroy($id)
+    public function destroy($breaktimeId)
     {
-        $breaktime = Breaktime::findOrFail($id);
+        $breaktime = Breaktime::findOrFail($breaktimeId);
         $breaktime->delete();
 
         return response()->json('Breaktime deleted successfully');

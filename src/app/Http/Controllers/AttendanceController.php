@@ -17,16 +17,16 @@ class AttendanceController extends Controller
      * 最終的に、これらの情報を含む日付一覧のビューを返す。
      *
      * @param \Illuminate\Http\Request $request HTTPリクエストインスタンス
-     * @param int $employeeId 従業員ID
+     * @param int $employeeId 従業員レコードのID
      * @return \Illuminate\View\View 勤怠情報を表示するビュー
      */
     public function index(Request $request, $employeeId)
     {
-        // リクエストのクエリ情報からAttendancesレコード検索用の年月を取得
+        // リクエストのクエリ情報から出勤・退勤レコード検索用の年月を取得
         $setYear = $request->has('year') ? $request->input('year') : now()->year;
         $setMonth = $request->has('month') ? $request->input('month') : now()->month;
 
-        // Attendancesテーブル、Breaktimesテーブルから該当月のレコードを取得
+        // 出勤・退勤テーブル、休憩テーブルから該当月のレコードを取得
         $results = Attendance::with('breaktimes')
             ->where('employee_id', $employeeId)
             ->whereYear('date', $setYear)
@@ -75,13 +75,13 @@ class AttendanceController extends Controller
     /**
      * 特定の勤怠レコードを表示する。
      *
-     * このメソッドは、指定された勤怠IDに基づいて勤怠レコードを取得する。
-     * 勤怠IDが0の場合は、新しい勤怠レコードのオブジェクトをデフォルト値で初期化する。
-     * そうでない場合は、指定されたIDに一致する勤怠レコードとそれに関連する休憩時間を取得する。
+     * このメソッドは、指定された出勤・退勤IDに基づいて勤怠レコードを取得する。
+     * 出勤・退勤IDが0の場合は、新しい勤怠レコードのオブジェクトをデフォルト値で初期化する。
+     * そうでない場合は、指定されたIDに一致する出勤・退勤レコードとそれに関連する休憩レコードを取得する。
      * 最終的に、これらの情報を含む日付編集のビューを返す。
      *
      * @param \Illuminate\Http\Request $request HTTPリクエストインスタンス
-     * @param int $attendanceId 表示する勤怠情報のID（新規の場合は0）
+     * @param int $attendanceId 表示する出勤・退勤レコードのID（新規の場合は0）
      * @return \Illuminate\View\View 勤怠情報を編集するビュー
      */
     public function show(Request $request, $attendanceId)
@@ -120,12 +120,12 @@ class AttendanceController extends Controller
     /**
      * 指定された出勤・退勤レコードとその休憩レコードを更新する。
      *
-     * このメソッドは、指定された勤怠IDに基づいて出勤・退勤レコードを更新する。
+     * このメソッドは、指定された出勤・退勤IDに基づいて出勤・退勤レコードを更新する。
      * さらに、リクエストに休憩時間のIDが含まれている場合は、関連する休憩レコードも更新する。
      * 処理完了後、ユーザーは日付一覧画面にリダイレクトされ、更新が完了したことを示すメッセージが表示される。
      *
      * @param \Illuminate\Http\Request $request HTTPリクエストインスタンス
-     * @param int $attendanceId 更新する勤怠情報のID
+     * @param int $attendanceId 更新する出勤・退勤レコードのID
      * @return \Illuminate\Http\RedirectResponse 勤怠一覧ページへのリダイレクト
      */
     public function update(Request $request, $attendanceId)
@@ -150,12 +150,12 @@ class AttendanceController extends Controller
      */
     private function updateAttendance($request, $attendanceId)
     {
-        $date = $request->only(['start_time', 'end_time']);
-        $date['work_status'] = Attendance::setWorkStatus($date['start_time'], $date['end_time']);
+        $data = $request->only(['start_time', 'end_time']);
+        $data['work_status'] = Attendance::setWorkStatus($data['start_time'], $data['end_time']);
 
         $attendance = Attendance::updateOrCreate(
             ['id' => $attendanceId],
-            $date + [
+            $data + [
                 'employee_id' => $request->input('employee_id'),
                 'date' => $request->input(['date'])
             ]
@@ -168,7 +168,7 @@ class AttendanceController extends Controller
      * 休憩レコードを更新または作成する。
      *
      * @param \Illuminate\Http\Request $request HTTPリクエストインスタンス
-     * @param int $id 関連する出勤・退勤レコードのID
+     * @param int $attendanceId 関連する出勤・退勤レコードのID
      */
     private function updateBreaktime($request, $attendanceId)
     {

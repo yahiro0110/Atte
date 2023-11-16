@@ -84,4 +84,10 @@ class EmployeeController extends Controller
     {
         //
     }
+
+    public function punch($id)
+    {
+        $employee = Employee::find($id);
+        return view('punch', ['employee' => $employee]);
+    }
 }

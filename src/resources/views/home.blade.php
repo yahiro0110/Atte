@@ -19,7 +19,7 @@
             <img src="{{ asset('img/home.svg') }}" alt="Your SVG Image">
         </div>
         <div class="content__button">
-            <a href="#">打刻</a>
+            <a href="{{ route('employee.punch', ['id' => $employee->id]) }}">打刻</a>
         </div>
         @if ($employee->role == 1)
             <div class="content__button">

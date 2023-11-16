@@ -1,0 +1,35 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.content__message {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 4rem;
+  width: 1500px;
+  font-size: 20px;
+}
+.content__image img {
+  width: 700px;
+  height: 700px;
+}
+.content__button {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 700px;
+}
+.content__button-item {
+  margin: 2rem;
+  padding: 1rem;
+  width: 200px;
+  border-radius: 5px;
+  background: #214be0;
+  cursor: pointer;
+  text-align: center;
+}
+.content__button-item a {
+  text-decoration: none;
+  color: #fff;
+}/*# sourceMappingURL=punch.css.map */

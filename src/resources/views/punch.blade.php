@@ -80,7 +80,7 @@
                     @csrf
                     <input type="hidden" name="employee_id" value="{{ $result->id }}">
                     <input type="hidden" name="punch_type" value="clockIn">
-                    <button type="submit">勤務開始</button>
+                    <button type="submit" {{ session('work_status') == null ? '' : 'disabled' }}>勤務開始</button>
                 </form>
             </div>
             <div class="content__button-item">
@@ -88,7 +88,8 @@
                     @csrf
                     <input type="hidden" name="employee_id" value="{{ $result->id }}">
                     <input type="hidden" name="punch_type" value="clockOut">
-                    <button type="submit">勤務終了</button>
+                    <button type="submit"
+                        {{ session('work_status') == 1 || session('work_status') == 3 ? '' : 'disabled' }}>勤務終了</button>
                 </form>
             </div>
             <div class="content__button-item">
@@ -96,7 +97,8 @@
                     @csrf
                     <input type="hidden" name="employee_id" value="{{ $result->id }}">
                     <input type="hidden" name="punch_type" value="onBreak">
-                    <button type="submit">休憩開始</button>
+                    <button type="submit"
+                        {{ session('work_status') == 1 || session('work_status') == 3 ? '' : 'disabled' }}>休憩開始</button>
                 </form>
             </div>
             <div class="content__button-item">
@@ -104,7 +106,7 @@
                     @csrf
                     <input type="hidden" name="employee_id" value="{{ $result->id }}">
                     <input type="hidden" name="punch_type" value="offBreak">
-                    <button type="submit">休憩終了</button>
+                    <button type="submit" {{ session('work_status') == 2 ? '' : 'disabled' }}>休憩終了</button>
                 </form>
             </div>
         </div>

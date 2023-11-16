@@ -19,6 +19,6 @@ class Employee extends Model
     public function attendance()
     {
         return $this->hasOne(Attendance::class)
-            ->where('date', now()->format('Y-m-d'))->latest();;
+            ->where('date', now()->format('Y-m-d'));
     }
 }

@@ -51,28 +51,6 @@ class AttendanceController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        // Unused variable $request removed
-        //
-    }
-
-    /**
      * 特定の勤怠レコードを表示する。
      *
      * このメソッドは、指定された出勤・退勤IDに基づいて勤怠レコードを取得する。
@@ -103,18 +81,6 @@ class AttendanceController extends Controller
         }
 
         return view('edit', compact('attendanceId', 'results', 'breakTime'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Attendance  $attendance
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Attendance $attendance)
-    {
-        // Unused variable $attendance removed
-        //
     }
 
     /**
@@ -188,15 +154,107 @@ class AttendanceController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Attendance  $attendance
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Attendance $attendance)
+    public function punch(Request $request, $employeeId)
     {
-        // Unused variable $attendance removed
-        //
+        // 今日の日付かつ指定の従業員IDを持つレコードを検索
+        $result = Attendance::with('breaktimes')
+            ->where('date', now()->format('Y-m-d'))
+            ->where('employee_id', $employeeId)
+            ->first();
+
+        // 打刻処理
+        switch ($request->input('punch_type')) {
+                // 出勤処理
+            case 'clockIn':
+                if ($result) {
+                    $message = 'すでに出勤しています';
+                } else {
+                    $message = $this->startWork($employeeId);
+                }
+                break;
+                // 退勤処理
+            case 'clockOut':
+                if ($result) {
+                    $message = $this->endWork($result);
+                } else {
+                    $message = '出勤情報がありません';
+                }
+                break;
+                // 休憩開始処理
+            case 'onBreak':
+                if ($result) {
+                    $message = $this->startBreak($result);
+                } else {
+                    $message = '出勤情報がありません';
+                }
+                break;
+                // 休憩終了処理
+            case 'offBreak':
+                if ($result) {
+                    $message = $this->endBreak($result);
+                } else {
+                    $message = '出勤情報がありません';
+                }
+                break;
+                // 例外処理
+            default:
+                # code...
+                break;
+        }
+
+        // 勤務状態を設定
+        $workStatus = Attendance::WORK_STATUSES[$request->input('punch_type')];
+
+        return redirect()->route('employee.punch', ['id' => $employeeId])->with('message', $message)->with('work_status', $workStatus);
+    }
+
+    private function startWork($employeeId)
+    {
+        Attendance::create([
+            'employee_id' => $employeeId,
+            'date' => now()->format('Y-m-d'),
+            'start_time' => now()->format('H:i'),
+            'work_status' => Attendance::WORK_STATUSES['clockIn']
+        ]);
+
+        return 'date success';
+    }
+
+    private function endWork($result)
+    {
+        $result->update([
+            'end_time' => now()->format('H:i'),
+            'work_status' => Attendance::WORK_STATUSES['clockOut']
+        ]);
+
+        return 'date success';
+    }
+
+    private function startBreak($result)
+    {
+        Breaktime::create([
+            'attendance_id' => $result->id,
+            'start_time' => now()->format('H:i'),
+        ]);
+
+        $result->update([
+            'work_status' => Attendance::WORK_STATUSES['onBreak']
+        ]);
+
+        return 'date success';
+    }
+
+    private function endBreak($result)
+    {
+        $breaktime = $result->breaktimes->last();
+        $breaktime->update([
+            'end_time' => now()->format('H:i'),
+        ]);
+
+        $result->update([
+            'work_status' => Attendance::WORK_STATUSES['offBreak']
+        ]);
+
+        return 'date success';
     }
 }

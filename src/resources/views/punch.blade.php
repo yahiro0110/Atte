@@ -41,7 +41,7 @@
                     @break
 
                     @default
-                        予期せぬエラーが発生しました。システム管理者にお問い合わせください。
+                        予期せぬエラーが発生しました。システム管理者にお問い合わせください。<br />
                         session('work_status') = {{ session('work_status') }}
                 @endswitch
             @else
@@ -68,7 +68,7 @@
                     @break
 
                     @default
-                        <img src="{{ asset('img/punch-default.svg') }}" alt="Your SVG Image">
+                        <img src="{{ asset('img/punch-error.svg') }}" alt="Your SVG Image">
                 @endswitch
             @else
                 <img src="{{ asset('img/punch-default.svg') }}" alt="Your SVG Image">

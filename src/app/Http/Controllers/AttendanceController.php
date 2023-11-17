@@ -167,33 +167,57 @@ class AttendanceController extends Controller
                 // 出勤処理
             case 'clockIn':
                 if ($result) {
-                    $message = 'すでに出勤しています';
+                    $message = [
+                        'content' => 'すでに出勤しています',
+                        'type' => 'error'
+                    ];
                 } else {
-                    $message = $this->startWork($employeeId);
+                    $message = [
+                        'content' => $this->addClockInTime($employeeId),
+                        'type' => 'success'
+                    ];
                 }
                 break;
                 // 退勤処理
             case 'clockOut':
                 if ($result) {
-                    $message = $this->endWork($result);
+                    $message = [
+                        'content' =>  $this->addClockOutTime($result),
+                        'type' => 'success'
+                    ];
                 } else {
-                    $message = '出勤情報がありません';
+                    $message = [
+                        'content' => '出勤情報がありません',
+                        'type' => 'error'
+                    ];
                 }
                 break;
                 // 休憩開始処理
             case 'onBreak':
                 if ($result) {
-                    $message = $this->startBreak($result);
+                    $message = [
+                        'content' =>  $this->addOnBreakTime($result),
+                        'type' => 'success'
+                    ];
                 } else {
-                    $message = '出勤情報がありません';
+                    $message = [
+                        'content' => '出勤情報がありません',
+                        'type' => 'error'
+                    ];
                 }
                 break;
                 // 休憩終了処理
             case 'offBreak':
                 if ($result) {
-                    $message = $this->endBreak($result);
+                    $message = [
+                        'content' =>  $this->addOffBreakTime($result),
+                        'type' => 'success'
+                    ];
                 } else {
-                    $message = '出勤情報がありません';
+                    $message = [
+                        'content' => '出勤情報がありません',
+                        'type' => 'error'
+                    ];
                 }
                 break;
                 // 例外処理
@@ -204,11 +228,12 @@ class AttendanceController extends Controller
 
         // 勤務状態を設定
         $workStatus = Attendance::WORK_STATUSES[$request->input('punch_type')];
+        $employeeName = $request->input('employee_name');
 
-        return redirect()->route('employee.punch', ['id' => $employeeId])->with('message', $message)->with('work_status', $workStatus);
+        return response()->json(['message' => $message, 'employee_name' => $employeeName, 'work_status' => $workStatus]);
     }
 
-    private function startWork($employeeId)
+    private function addClockInTime($employeeId)
     {
         Attendance::create([
             'employee_id' => $employeeId,
@@ -217,20 +242,20 @@ class AttendanceController extends Controller
             'work_status' => Attendance::WORK_STATUSES['clockIn']
         ]);
 
-        return 'date success';
+        return '出勤時刻を登録しました';
     }
 
-    private function endWork($result)
+    private function addClockOutTime($result)
     {
         $result->update([
             'end_time' => now()->format('H:i'),
             'work_status' => Attendance::WORK_STATUSES['clockOut']
         ]);
 
-        return 'date success';
+        return '退勤時刻を登録しました';
     }
 
-    private function startBreak($result)
+    private function addOnBreakTime($result)
     {
         Breaktime::create([
             'attendance_id' => $result->id,
@@ -241,10 +266,10 @@ class AttendanceController extends Controller
             'work_status' => Attendance::WORK_STATUSES['onBreak']
         ]);
 
-        return 'date success';
+        return '休憩開始時刻を登録しました';
     }
 
-    private function endBreak($result)
+    private function addOffBreakTime($result)
     {
         $breaktime = $result->breaktimes->last();
         $breaktime->update([
@@ -255,6 +280,6 @@ class AttendanceController extends Controller
             'work_status' => Attendance::WORK_STATUSES['offBreak']
         ]);
 
-        return 'date success';
+        return '休憩終了時刻を登録しました';
     }
 }

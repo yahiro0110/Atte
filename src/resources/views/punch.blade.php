@@ -4,6 +4,10 @@
     打刻
 @endsection
 
+@section('X-CSRF-TOKEN')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
+
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/punch.css') }}">
 @endsection
@@ -48,7 +52,11 @@
                 勤怠管理で業務がスムーズに。打刻のご協力ありがとうございます。
             @endif
         </div>
-        <div class="content__image">
+        <div id="timer"></div>
+        <div class="content__image" id="imageContainer" data-clockin-img="{{ asset('img/punch-clockIn.svg') }}"
+            data-onbreak-img="{{ asset('img/punch-onBreak.svg') }}"
+            data-offbreak-img="{{ asset('img/punch-offBreak.svg') }}"
+            data-clockout-img="{{ asset('img/punch-clockOut.svg') }}" data-error-img="{{ asset('img/punch-error.svg') }}">
             @if (session('work_status'))
                 @switch(session('work_status'))
                     @case(1)
@@ -76,40 +84,48 @@
         </div>
         <div class="content__button">
             <div class="content__button-item">
-                <form action="{{ route('attendance.punch', ['id' => $result->id]) }}" method="post">
+                <form id="clockIn">
                     @csrf
                     <input type="hidden" name="employee_id" value="{{ $result->id }}">
+                    <input type="hidden" name="employee_name" value="{{ $result->name }}">
                     <input type="hidden" name="punch_type" value="clockIn">
-                    <button type="submit" {{ session('work_status') == null ? '' : 'disabled' }}>勤務開始</button>
+                    <button type="submit" {{ session('work_status') == null ? '' : 'disabled' }}
+                        id="clockInButton">勤務開始</button>
                 </form>
             </div>
             <div class="content__button-item">
-                <form action="{{ route('attendance.punch', ['id' => $result->id]) }}" method="post">
+                <form id="clockOut">
                     @csrf
                     <input type="hidden" name="employee_id" value="{{ $result->id }}">
+                    <input type="hidden" name="employee_name" value="{{ $result->name }}">
                     <input type="hidden" name="punch_type" value="clockOut">
                     <button type="submit"
-                        {{ session('work_status') == 1 || session('work_status') == 3 ? '' : 'disabled' }}>勤務終了</button>
+                        {{ session('work_status') == 1 || session('work_status') == 3 ? '' : 'disabled' }}
+                        id="clockOutButton">勤務終了</button>
                 </form>
             </div>
             <div class="content__button-item">
-                <form action="{{ route('attendance.punch', ['id' => $result->id]) }}" method="post">
+                <form id="onBreak">
                     @csrf
                     <input type="hidden" name="employee_id" value="{{ $result->id }}">
+                    <input type="hidden" name="employee_name" value="{{ $result->name }}">
                     <input type="hidden" name="punch_type" value="onBreak">
                     <button type="submit"
-                        {{ session('work_status') == 1 || session('work_status') == 3 ? '' : 'disabled' }}>休憩開始</button>
+                        {{ session('work_status') == 1 || session('work_status') == 3 ? '' : 'disabled' }}
+                        id="onBreakButton">休憩開始</button>
                 </form>
             </div>
             <div class="content__button-item">
-                <form action="{{ route('attendance.punch', ['id' => $result->id]) }}" method="post">
+                <form id="offBreak">
                     @csrf
                     <input type="hidden" name="employee_id" value="{{ $result->id }}">
+                    <input type="hidden" name="employee_name" value="{{ $result->name }}">
                     <input type="hidden" name="punch_type" value="offBreak">
-                    <button type="submit" {{ session('work_status') == 2 ? '' : 'disabled' }}>休憩終了</button>
+                    <button type="submit" {{ session('work_status') == 2 ? '' : 'disabled' }}
+                        id="offBreakButton">休憩終了</button>
                 </form>
             </div>
         </div>
     </div>
-    </div>
+    <script src="{{ asset('js/punchSetup.js') }}"></script>
 @endsection

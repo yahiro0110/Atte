@@ -27,6 +27,25 @@
 }
 
 /*--------------------------------------------------
+タイマー表示エリア
+--------------------------------------------------*/
+#timerDisplay {
+    width: 800px;
+    position: absolute; /* 絶対位置で配置 */
+    top: 15%; /* SVGの中心（上から）に配置 */
+    left: 50%; /* SVGの中心（左から）に配置 */
+    transform: translate(-50%, -50%); /* センタリングのための調整 */
+    color: #19191b; /* テキストの色 */
+    padding: 1rem 4rem; /* 内側の余白 */
+    border-radius: 50px; /* 角を丸く */
+    font-size: 6rem; /* フォントサイズ */
+    text-align: center; /* テキストを中央揃え */
+    z-index: 10;
+    // フォントの設定
+    font-family: "Ibarra Real Nova", serif;
+}
+
+/*--------------------------------------------------
 コンテンツエリア
 --------------------------------------------------*/
 .content {
@@ -41,6 +60,7 @@
         font-size: 20px;
     }
     &__image {
+        position: relative;
         img {
             width: 700px;
             height: 700px;
@@ -69,6 +89,8 @@
                 font-size: 1rem;
                 cursor: pointer;
                 text-align: center;
+                // アニメーション
+                transition: background-color 0.5s, color 0.5s;
                 &:disabled {
                     background: #909090;
                     color: #f2f2f2;
@@ -76,5 +98,21 @@
                 }
             }
         }
+    }
+}
+
+/*--------------------------------------------------
+アニメーション効果を適用する
+--------------------------------------------------*/
+.fade-in {
+    animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }

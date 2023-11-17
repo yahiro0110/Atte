@@ -10,6 +10,9 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/punch.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@1,700&display=swap" rel="stylesheet">
 @endsection
 
 @section('nav')
@@ -52,7 +55,7 @@
                 勤怠管理で業務がスムーズに。打刻のご協力ありがとうございます。
             @endif
         </div>
-        <div id="timer"></div>
+        <div id="timerDisplay"></div>
         <div class="content__image" id="imageContainer" data-clockin-img="{{ asset('img/punch-clockIn.svg') }}"
             data-onbreak-img="{{ asset('img/punch-onBreak.svg') }}"
             data-offbreak-img="{{ asset('img/punch-offBreak.svg') }}"

@@ -17,7 +17,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [EmployeeController::class, 'show'])->name('employee.home');
+Route::get('/punch/{id}', [EmployeeController::class, 'punch'])->name('employee.punch');
+
 Route::get('/attendance/{id}', [AttendanceController::class, 'index'])->name('attendance.index');
 Route::get('/edit/{id}', [AttendanceController::class, 'show'])->name('attendance.show');
 Route::post('/edit/{id}', [AttendanceController::class, 'update'])->name('attendance.update');
+Route::post('/punch/{id}', [AttendanceController::class, 'punch'])->name('attendance.punch');
+
+
 Route::delete('/breaktime/delete/{id}', [BreaktimeController::class, 'destroy'])->name('breaktime.destroy');

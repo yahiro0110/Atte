@@ -51,28 +51,6 @@ class AttendanceController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        // Unused variable $request removed
-        //
-    }
-
-    /**
      * 特定の勤怠レコードを表示する。
      *
      * このメソッドは、指定された出勤・退勤IDに基づいて勤怠レコードを取得する。
@@ -103,18 +81,6 @@ class AttendanceController extends Controller
         }
 
         return view('edit', compact('attendanceId', 'results', 'breakTime'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Attendance  $attendance
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Attendance $attendance)
-    {
-        // Unused variable $attendance removed
-        //
     }
 
     /**
@@ -188,15 +154,132 @@ class AttendanceController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Attendance  $attendance
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Attendance $attendance)
+    public function punch(Request $request, $employeeId)
     {
-        // Unused variable $attendance removed
-        //
+        // 今日の日付かつ指定の従業員IDを持つレコードを検索
+        $result = Attendance::with('breaktimes')
+            ->where('date', now()->format('Y-m-d'))
+            ->where('employee_id', $employeeId)
+            ->first();
+
+        // 打刻処理
+        switch ($request->input('punch_type')) {
+                // 出勤処理
+            case 'clockIn':
+                if ($result) {
+                    $message = [
+                        'content' => 'すでに出勤しています',
+                        'type' => 'error'
+                    ];
+                } else {
+                    $message = [
+                        'content' => $this->addClockInTime($employeeId),
+                        'type' => 'success'
+                    ];
+                }
+                break;
+                // 退勤処理
+            case 'clockOut':
+                if ($result) {
+                    $message = [
+                        'content' =>  $this->addClockOutTime($result),
+                        'type' => 'success'
+                    ];
+                } else {
+                    $message = [
+                        'content' => '出勤情報がありません',
+                        'type' => 'error'
+                    ];
+                }
+                break;
+                // 休憩開始処理
+            case 'onBreak':
+                if ($result) {
+                    $message = [
+                        'content' =>  $this->addOnBreakTime($result),
+                        'type' => 'success'
+                    ];
+                } else {
+                    $message = [
+                        'content' => '出勤情報がありません',
+                        'type' => 'error'
+                    ];
+                }
+                break;
+                // 休憩終了処理
+            case 'offBreak':
+                if ($result) {
+                    $message = [
+                        'content' =>  $this->addOffBreakTime($result),
+                        'type' => 'success'
+                    ];
+                } else {
+                    $message = [
+                        'content' => '出勤情報がありません',
+                        'type' => 'error'
+                    ];
+                }
+                break;
+                // 例外処理
+            default:
+                # code...
+                break;
+        }
+
+        // 勤務状態を設定
+        $workStatus = Attendance::WORK_STATUSES[$request->input('punch_type')];
+        $employeeName = $request->input('employee_name');
+
+        return response()->json(['message' => $message, 'employee_name' => $employeeName, 'work_status' => $workStatus]);
+    }
+
+    private function addClockInTime($employeeId)
+    {
+        Attendance::create([
+            'employee_id' => $employeeId,
+            'date' => now()->format('Y-m-d'),
+            'start_time' => now()->format('H:i'),
+            'work_status' => Attendance::WORK_STATUSES['clockIn']
+        ]);
+
+        return '出勤時刻を登録しました';
+    }
+
+    private function addClockOutTime($result)
+    {
+        $result->update([
+            'end_time' => now()->format('H:i'),
+            'work_status' => Attendance::WORK_STATUSES['clockOut']
+        ]);
+
+        return '退勤時刻を登録しました';
+    }
+
+    private function addOnBreakTime($result)
+    {
+        Breaktime::create([
+            'attendance_id' => $result->id,
+            'start_time' => now()->format('H:i'),
+        ]);
+
+        $result->update([
+            'work_status' => Attendance::WORK_STATUSES['onBreak']
+        ]);
+
+        return '休憩開始時刻を登録しました';
+    }
+
+    private function addOffBreakTime($result)
+    {
+        $breaktime = $result->breaktimes->last();
+        $breaktime->update([
+            'end_time' => now()->format('H:i'),
+        ]);
+
+        $result->update([
+            'work_status' => Attendance::WORK_STATUSES['offBreak']
+        ]);
+
+        return '休憩終了時刻を登録しました';
     }
 }

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
 use Illuminate\Http\Request;
+use App\Models\Employee;
+use App\Models\Attendance;
 
 class EmployeeController extends Controller
 {
@@ -83,5 +84,48 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         //
+    }
+
+    public function punch($employeeId)
+    {
+        $result = Employee::with('attendance')->find($employeeId);
+
+        if ($result && $result->attendance) {
+            switch ($result->attendance->work_status) {
+                case '1':
+                    $workStatus = Attendance::WORK_STATUSES['clockIn'];
+                    break;
+
+                case '2':
+                    $workStatus = Attendance::WORK_STATUSES['onBreak'];
+                    break;
+
+                case '3':
+                    $workStatus = Attendance::WORK_STATUSES['offBreak'];
+                    break;
+
+                case '4':
+                    $workStatus = Attendance::WORK_STATUSES['clockOut'];
+                    break;
+
+                case '5':
+                    $workStatus = Attendance::WORK_STATUSES['noClockOut'];
+                    break;
+
+                case '6':
+                    $workStatus = Attendance::WORK_STATUSES['noWork'];
+                    break;
+
+                default:
+                    $workStatus = 0;
+                    break;
+            }
+        } else {
+            $workStatus = null;
+        }
+
+        session()->flash('work_status', $workStatus);
+
+        return view('punch', ['result' => $result]);
     }
 }

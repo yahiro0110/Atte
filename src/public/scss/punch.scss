@@ -1,0 +1,118 @@
+/*--------------------------------------------------
+アラートメッセージエリア
+--------------------------------------------------*/
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.alert {
+    &__success {
+        padding: 20px 30px;
+        border-color: #badbcc;
+        background-color: #d1e7dd;
+        color: #0f5132;
+        animation: fadeOut 8s;
+        animation-fill-mode: forwards; /* アニメーション終了後も最終フレームを維持 */
+        position: absolute; /* 絶対位置指定 */
+        top: 0px; /* 他のコンテンツの上に配置 */
+        left: 0; /* 他のコンテンツの左に配置 */
+        width: 100%; /* 横幅を親要素いっぱいに */
+    }
+}
+
+/*--------------------------------------------------
+タイマー表示エリア
+--------------------------------------------------*/
+#timerDisplay {
+    width: 800px;
+    position: absolute; /* 絶対位置で配置 */
+    top: 15%; /* SVGの中心（上から）に配置 */
+    left: 50%; /* SVGの中心（左から）に配置 */
+    transform: translate(-50%, -50%); /* センタリングのための調整 */
+    color: #19191b; /* テキストの色 */
+    padding: 1rem 4rem; /* 内側の余白 */
+    border-radius: 50px; /* 角を丸く */
+    font-size: 6rem; /* フォントサイズ */
+    text-align: center; /* テキストを中央揃え */
+    z-index: 10;
+    // フォントの設定
+    font-family: "Ibarra Real Nova", serif;
+}
+
+/*--------------------------------------------------
+コンテンツエリア
+--------------------------------------------------*/
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &__message {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        padding-left: 4rem;
+        width: 1500px;
+        font-size: 20px;
+    }
+    &__image {
+        position: relative;
+        img {
+            width: 700px;
+            height: 700px;
+        }
+    }
+    &__button {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 700px;
+        &-item {
+            button {
+                // 標準のスタイルをリセット
+                border: none;
+                box-shadow: none;
+                outline: none;
+                font-family: inherit;
+                cursor: pointer;
+                // カスタムスタイル
+                margin: 2rem;
+                padding: 1rem;
+                width: 200px;
+                border-radius: 5px;
+                background: #214be0;
+                color: #f2f2f2;
+                font-size: 1rem;
+                cursor: pointer;
+                text-align: center;
+                // アニメーション
+                transition: background-color 0.5s, color 0.5s;
+                &:disabled {
+                    background: #909090;
+                    color: #f2f2f2;
+                    cursor: default;
+                }
+            }
+        }
+    }
+}
+
+/*--------------------------------------------------
+アニメーション効果を適用する
+--------------------------------------------------*/
+.fade-in {
+    animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

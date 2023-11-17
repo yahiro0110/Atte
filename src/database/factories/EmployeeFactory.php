@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class BreaktimeFactory extends Factory
+class EmployeeFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -14,9 +14,10 @@ class BreaktimeFactory extends Factory
     public function definition()
     {
         return [
-            'attendance_id' => $this->faker->numberBetween(1, 1000),
-            'start_time' => '',
-            'end_time' => ''
+            'name' =>  $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail,
+            'role' => $this->faker->numberBetween(1, 2),
+            'password' => $this->faker->password
         ];
     }
 }

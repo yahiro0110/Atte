@@ -9,12 +9,17 @@ use DateTime;
 class AttendanceSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * 100日間の出勤・退勤データを生成する。
      *
-     * @return void
+     * このメソッドは、指定された従業員IDに対して、開始日から100日間の出勤・退勤データを生成する。
+     * 週末（土曜日と日曜日）はスキップし、次の平日（月曜日）から再開する。
+     *
+     * @param int $employeeId 従業員のID
+     * @return void このメソッドは戻り値を返さない
      */
-    public function run()
+    private function createDummyAttendanceData($employeeId)
     {
+        // 開始日の指定
         $targetDate = new DateTime('2023-10-01');
 
         for ($i = 0; $i < 100; $i++) {
@@ -23,10 +28,23 @@ class AttendanceSeeder extends Seeder
             }
 
             Attendance::factory()->create([
+                'employee_id' => $employeeId,
                 'date' => $targetDate->format('Y-m-d'),
             ]);
 
             $targetDate->modify('+1 day');
+        }
+    }
+
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        for ($employeeId = 1; $employeeId <= 30; $employeeId++) {
+            $this->createDummyAttendanceData($employeeId);
         }
     }
 }

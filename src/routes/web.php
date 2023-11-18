@@ -24,5 +24,6 @@ Route::get('/edit/{id}', [AttendanceController::class, 'show'])->name('attendanc
 Route::post('/edit/{id}', [AttendanceController::class, 'update'])->name('attendance.update');
 Route::post('/punch/{id}', [AttendanceController::class, 'punch'])->name('attendance.punch');
 
+Route::get('/staff/attendance/', [EmployeeController::class, 'index'])->name('employee.index');
 
 Route::delete('/breaktime/delete/{id}', [BreaktimeController::class, 'destroy'])->name('breaktime.destroy');

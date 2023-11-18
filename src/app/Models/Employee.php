@@ -21,4 +21,30 @@ class Employee extends Model
         return $this->hasOne(Attendance::class)
             ->where('date', now()->format('Y-m-d'));
     }
+
+    public static function getAttendancesForDate($year, $month, $day)
+    {
+        return self::with([
+            'attendances' => function ($query) use ($year, $month, $day) {
+                $query->whereYear('date', $year)
+                    ->whereMonth('date', $month)
+                    ->whereDay('date', $day)
+                    ->with('breaktimes');
+            }
+        ])
+            ->where('role', 2)
+            ->get();
+    }
+
+    public static function calculateAttendanceData($employees)
+    {
+        foreach ($employees as $employee) {
+            foreach ($employee->attendances as $attendance) {
+                $attendance->total_break_time = $attendance->calculateTotalBreakTimes($attendance->id, $attendance->breaktimes);
+                $attendance->total_work_time = $attendance->calculateTotalWorkTime($attendance->start_time, $attendance->end_time, $attendance->total_break_time);
+            }
+        }
+
+        return $employees;
+    }
 }

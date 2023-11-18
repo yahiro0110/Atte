@@ -1,0 +1,130 @@
+.header {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/*--------------------------------------------------
+    アラートメッセージエリア
+    --------------------------------------------------*/
+.alert {
+    &__success {
+        padding: 20px 30px;
+        border-color: #badbcc;
+        background-color: #d1e7dd;
+        color: #0f5132;
+        animation: fadeOut 8s;
+        animation-fill-mode: forwards; /* アニメーション終了後も最終フレームを維持 */
+        position: absolute; /* 絶対位置指定 */
+        top: 0px; /* 他のコンテンツの上に配置 */
+        left: 0; /* 他のコンテンツの左に配置 */
+        width: 100%; /* 横幅を親要素いっぱいに */
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 100px;
+    overflow: auto;
+    /*--------------------------------------------------
+    メッセージエリア
+    --------------------------------------------------*/
+    &__message {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        padding-left: 4rem;
+        width: 1500px;
+        font-size: 20px;
+    }
+    &__title {
+        font-size: 1.25rem;
+        ul {
+            display: flex;
+            padding: 0;
+            justify-content: center;
+            align-items: center;
+            list-style: none;
+        }
+        li {
+            padding-left: 1rem;
+            padding-right: 1rem;
+            &:has(a) {
+                border: 1px solid #214be0;
+                background-color: #fafafa;
+            }
+        }
+        a {
+            text-decoration: none;
+            color: #214be0;
+            display: block;
+        }
+    }
+    /*--------------------------------------------------
+    日付エリア
+    --------------------------------------------------*/
+    &__table {
+        padding-top: 1rem;
+        padding-bottom: 4rem;
+        display: flex;
+        justify-content: center; /* テーブルを水平中央に配置 */
+        align-items: center;
+        &-container {
+            margin: 0;
+            width: 1000px;
+            border-collapse: collapse; /* セルの境界線を結合 */
+            th,
+            td {
+                border: none; /* すべての境界線を非表示 */
+                border-bottom: 1px solid #909090;
+                padding: 15px;
+                text-align: left;
+            }
+            th {
+                border-top: 1px solid #909090;
+            }
+            td {
+                white-space: normal;
+            }
+        }
+        &-tr {
+            &-weekend {
+                background-color: #909090;
+            }
+        }
+        &-td {
+            &-date {
+                width: 175px;
+            }
+            &-time {
+                width: 180px;
+            }
+        }
+        &-btn {
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            width: 200px;
+            border-radius: 5px;
+            background: #214be0;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            color: #f2f2f2;
+            font-size: 0.8rem;
+        }
+    }
+}

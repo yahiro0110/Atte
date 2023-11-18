@@ -27,6 +27,7 @@ class AttendanceController extends Controller
         $setMonth = $request->has('month') ? $request->input('month') : now()->month;
 
         // 出勤・退勤テーブル、休憩テーブルから該当月のレコードを取得
+        // TODO: あとでAttendanceモデルに移動する
         $results = Attendance::with('breaktimes')
             ->where('employee_id', $employeeId)
             ->whereYear('date', $setYear)
@@ -34,6 +35,7 @@ class AttendanceController extends Controller
             ->get();
 
         // 休憩時間、勤務時間を計算
+        // TODO: あとでAttendanceモデルに移動する
         $breakTimes = [];
         $workedTimes = [];
 

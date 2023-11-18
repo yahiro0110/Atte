@@ -69,9 +69,8 @@
     &__table {
         padding-top: 1rem;
         padding-bottom: 4rem;
-        display: flex;
-        justify-content: center; /* テーブルを水平中央に配置 */
         align-items: center;
+        height: 450px;
         &-container {
             margin: 0;
             width: 1000px;
@@ -126,11 +125,13 @@
                 flex-grow: 1; /* 残りのスペースを均等に分配 */
             }
             li {
-                padding: 0.75rem 1rem; /* 内側の余白を追加し、枠内の隙間を調整 */
+                width: 3.5rem;
+                padding: 1rem; /* 内側の余白を追加し、枠内の隙間を調整 */
                 border: 1px solid #909090; /* 外枠の線を表示 */
                 margin-right: -1px; /* 重なる部分が太くなるのを解消 */
                 background-color: #fafafa;
                 color: #214be0; /* リンクの文字色を変更 */
+                text-align: center;
             }
             li a {
                 text-decoration: none; /* 下線を削除 */

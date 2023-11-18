@@ -26,6 +26,9 @@ class EmployeeController extends Controller
         // 休憩時間、勤務時間を計算
         $results = Employee::calculateAttendanceData($results);
 
+        // クエリパラメータをページネーションリンクに含める
+        $results->appends($request->all());
+
         return view('staff_index', compact('results'));
     }
 

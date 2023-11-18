@@ -1,10 +1,4 @@
 @charset "UTF-8";
-.header {
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
 @keyframes fadeOut {
   0% {
     opacity: 1;
@@ -15,7 +9,7 @@
 }
 /*--------------------------------------------------
     アラートメッセージエリア
-    --------------------------------------------------*/
+--------------------------------------------------*/
 .alert__success {
   padding: 20px 30px;
   border-color: #badbcc;
@@ -33,13 +27,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 100px;
-  overflow: auto;
   /*--------------------------------------------------
   メッセージエリア
   --------------------------------------------------*/
   /*--------------------------------------------------
   日付エリア
+  --------------------------------------------------*/
+  /*--------------------------------------------------
+  ページネーション
   --------------------------------------------------*/
 }
 .content__message {
@@ -89,7 +84,7 @@
   border: none; /* すべての境界線を非表示 */
   border-bottom: 1px solid #909090;
   padding: 15px;
-  text-align: left;
+  text-align: center;
 }
 .content__table-container th {
   border-top: 1px solid #909090;
@@ -100,24 +95,45 @@
 .content__table-tr-weekend {
   background-color: #909090;
 }
-.content__table-td-date {
+.content__table-td-name {
   width: 175px;
 }
 .content__table-td-time {
   width: 180px;
 }
-.content__table-btn {
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  width: 200px;
-  border-radius: 5px;
-  background: #214be0;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  color: #f2f2f2;
-  font-size: 0.8rem;
+.content__page {
+  display: flex; /* アイテムを横に配置 */
+  justify-content: space-between; /* アイテムを均等に配置 */
+  align-items: center; /* 垂直方向の中央寄せ */
+  padding: 10px;
+  height: 50px;
+}
+.content__page-nav {
+  display: flex; /* アイテムを横に配置 */
+  align-items: center; /* 垂直方向の中央寄せ */
+  margin: 0;
+  font-size: 1rem;
+}
+.content__page-nav ul {
+  list-style: none; /* リストスタイルを無効にする */
+  padding: 0; /* リストの内側の余白をゼロにする */
+  display: flex; /* フレックスコンテナを使用してアイテムを横に配置 */
+  justify-content: space-between; /* アイテムを均等に配置 */
+  flex-grow: 1; /* 残りのスペースを均等に分配 */
+}
+.content__page-nav li {
+  padding: 0.75rem 1rem; /* 内側の余白を追加し、枠内の隙間を調整 */
+  border: 1px solid #909090; /* 外枠の線を表示 */
+  margin-right: -1px; /* 重なる部分が太くなるのを解消 */
+  background-color: #fafafa;
+  color: #214be0; /* リンクの文字色を変更 */
+}
+.content__page-nav li a {
+  text-decoration: none; /* 下線を削除 */
+  color: #214be0; /* リンクの文字色を変更 */
+}
+.content__page-nav li.active {
+  background-color: #214be0; /* 背景色を黒に */
+  color: #fafafa; /* 文字色を白に */
+  border: none; /* 下線を削除 */
 }/*# sourceMappingURL=staff_index.css.map */

@@ -33,7 +33,7 @@ class Employee extends Model
             }
         ])
             ->where('role', 2)
-            ->get();
+            ->paginate(5);
     }
 
     public static function calculateAttendanceData($employees)

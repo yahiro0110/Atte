@@ -38,7 +38,7 @@
         <div class="content__table">
             <table class="content__table-container">
                 <tr>
-                    <th class="content__table-td-date">名前</th>
+                    <th class="content__table-td-name">名前</th>
                     <th class="content__table-td-time">勤務開始</th>
                     <th class="content__table-td-time">勤務終了</th>
                     <th class="content__table-td-time">休憩時間</th>
@@ -71,6 +71,11 @@
                     </tr>
                 @endforeach
             </table>
+        </div>
+        <div class="content__page">
+            <div class="content__page-nav">
+                {{ $results->links('vendor.pagination.custom') }}
+            </div>
         </div>
     </div>
     <script src="{{ asset('js/displayCurrentDay.js') }}"></script>

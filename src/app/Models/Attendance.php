@@ -24,6 +24,9 @@ class Attendance extends Model
 
     protected $fillable = ['employee_id', 'date', 'start_time', 'end_time', 'work_status'];
 
+    // カスタム属性(休憩時間の合計と勤務時間の合計)を追加
+    protected $append = ['total_break_time', 'total_work_time'];
+
     public function employee()
     {
         return $this->belongsTo(Employee::class);

@@ -13,30 +13,23 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        // リクエストのクエリ情報から出勤・退勤レコード検索用の日付を取得
+        $setYear = $request->has('year') ? $request->input('year') : now()->year;
+        $setMonth = $request->has('month') ? $request->input('month') : now()->month;
+        $setDay = $request->has('day') ? $request->input('day') : now()->day;
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        // 従業員テーブル、出勤・退勤テーブル、休憩テーブルから該当日付のレコードを取得
+        $results = Employee::getAttendancesForDate($setYear, $setMonth, $setDay);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        // 休憩時間、勤務時間を計算
+        $results = Employee::calculateAttendanceData($results);
+
+        // クエリパラメータをページネーションリンクに含める
+        $results->appends($request->all());
+
+        return view('staff_index', compact('results'));
     }
 
     /**
@@ -52,45 +45,12 @@ class EmployeeController extends Controller
         return view('home', ['employee' => $employee]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Employee $employee)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Employee $employee)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Employee $employee)
-    {
-        //
-    }
-
     public function punch($employeeId)
     {
         $result = Employee::with('attendance')->find($employeeId);
 
         if ($result && $result->attendance) {
+            // TODO: switch文を使用しなくとも、$result->attendance->work_statusをそのままビューに渡せばよい
             switch ($result->attendance->work_status) {
                 case '1':
                     $workStatus = Attendance::WORK_STATUSES['clockIn'];

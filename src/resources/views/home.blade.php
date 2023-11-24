@@ -23,7 +23,7 @@
         </div>
         @if ($employee->role == 1)
             <div class="content__button">
-                <a href="#">スタッフ勤怠情報</a>
+                <a href="{{ route('employee.index') }}">スタッフ勤怠情報</a>
             </div>
         @endif
     </div>

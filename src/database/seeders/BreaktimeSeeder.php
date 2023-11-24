@@ -10,7 +10,7 @@ use DateInterval;
 class BreaktimeSeeder extends Seeder
 {
     /**
-     * 指定した時間帯内でランダムな時刻を生成します。
+     * 指定した時間帯内でランダムな時刻を生成する。
      *
      * @param int $startHour 開始時間（時）
      * @param int $endHour   終了時間（時）
@@ -36,14 +36,14 @@ class BreaktimeSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 200; $i++) {
+        for ($i = 0; $i < 1500; $i++) {
             // 8時から15時の間でランダムの時刻を生成
             $startTime = $this->generateRandomTime(8, 15);
 
             // Breaktimeモデルを使ってダミーデータを生成
             Breaktime::factory()->create([
-                'start_time' => $startTime->format('H:i:s'),
-                'end_time' => $startTime->add(new DateInterval('PT15M'))->format('H:i:s')
+                'start_time' => $startTime->format('H:i'),
+                'end_time' => $startTime->add(new DateInterval('PT15M'))->format('H:i')
             ]);
         }
     }

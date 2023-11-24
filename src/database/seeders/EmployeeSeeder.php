@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Employee;
 
 class EmployeeSeeder extends Seeder
 {
@@ -14,19 +14,28 @@ class EmployeeSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('employees')->insert([
+        // 初期データを配列にする
+        $initialEmployees = [
             [
                 'name' => 'マネージャ',
-                'email' => 'manage@exsample.com',
+                'email' => 'manager@example.com',
                 'role' => '1',
                 'password' => 'manage'
             ],
             [
                 'name' => 'スタッフ',
-                'email' => 'staff@exsample.com',
+                'email' => 'staff@example.com',
                 'role' => '2',
                 'password' => 'staff'
             ]
-        ]);
+        ];
+
+        // 各初期データを挿入する
+        foreach ($initialEmployees as $employee) {
+            Employee::create($employee);
+        }
+
+        // ファクトリーを使った追加データの生成
+        Employee::factory()->count(28)->create();
     }
 }

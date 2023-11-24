@@ -90,5 +90,5 @@
 
         </div>
     </div>
-    <script src="{{ asset('js/displayCurrentDate.js') }}"></script>
+    <script src="{{ asset('js/displayCurrentMonth.js') }}"></script>
 @endsection

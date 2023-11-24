@@ -32,7 +32,8 @@ class Employee extends Model
                     ->with('breaktimes');
             }
         ])
-            ->where('role', 2)
+            // MEMO: 権限で絞り込みたい場合はここでwhereを追加する
+            // ->where('role', 2)
             ->paginate(5);
     }
 

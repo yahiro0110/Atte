@@ -17,10 +17,10 @@ use App\Http\Middleware\EnsureUserIsAuthenticated;
 |
 */
 
-Route::get('/register', [EmployeeController::class, 'create'])->name('employee.create');
+Route::get('/register/{type?}', [EmployeeController::class, 'create'])->name('employee.create');
 Route::post('/register', [EmployeeController::class, 'store'])->name('employee.store');
 
-Route::get('/login', [EmployeeController::class, 'showLoginForm'])->name('employee.loginForm');
+Route::get('/login/{type?}', [EmployeeController::class, 'showLoginForm'])->name('employee.loginForm');
 Route::post('/login', [EmployeeController::class, 'login'])->name('employee.login');
 
 Route::get('/logout', [EmployeeController::class, 'logout'])->name('employee.logout');

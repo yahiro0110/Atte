@@ -12,7 +12,11 @@
     <div class="content">
         <form action="{{ route('employee.store') }}" method="POST" class="content__form">
             @csrf
-            <div class="content__form-title">新規登録</div>
+            @if (is_null($type))
+                <div class="content__form-title">新規登録</div>
+            @else
+                <div class="content__form-title">新規登録（マネージャ）</div>
+            @endif
             <div class="content__form-item">
                 <input type="text" name="name" id="name" value="{{ old('name') }}" placeholder="名前">
                 @error('name')
@@ -34,7 +38,11 @@
             <div class="content__form-item">
                 <input type="password" name="password_confirmation" id="password_confirmation" placeholder="確認用パスワード">
             </div>
-            <input type="hidden" name="role" value="2">
+            @if (is_null($type))
+                <input type="hidden" name="role" value="2">
+            @else
+                <input type="hidden" name="role" value="1">
+            @endif
             <div class="content__form-button">
                 <button type="submit">新規登録</button>
             </div>

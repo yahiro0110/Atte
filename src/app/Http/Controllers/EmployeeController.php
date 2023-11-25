@@ -16,9 +16,9 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($type = null)
     {
-        return view('auth.register');
+        return view('auth.register', compact('type'));
     }
 
     /**
@@ -41,9 +41,9 @@ class EmployeeController extends Controller
         return redirect(RouteServiceProvider::HOME);
     }
 
-    public function showLoginForm()
+    public function showLoginForm($type = null)
     {
-        return view('auth.login');
+        return view('auth.login', compact('type'));
     }
 
     public function login(Request $request)

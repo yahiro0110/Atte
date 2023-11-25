@@ -15,7 +15,11 @@
             @error('error')
                 <div class="content__form-error">{{ $message }}</div>
             @enderror
-            <div class="content__form-title">ログイン</div>
+            @if (is_null($type))
+                <div class="content__form-title">ログイン</div>
+            @else
+                <div class="content__form-title">ログイン（マネージャ）</div>
+            @endif
             <div class="content__form-item">
                 <input type="email" name="email" id="email" value="{{ old('email') }}" placeholder="メールアドレス">
             </div>

@@ -8,10 +8,6 @@
     <link rel="stylesheet" href="{{ asset('css/logout.css') }}">
 @endsection
 
-@section('nav')
-    @include('layouts.nav')
-@endsection
-
 @section('content')
     <div class="content">
         <div class="content__item">

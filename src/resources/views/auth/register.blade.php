@@ -8,10 +8,6 @@
     <link rel="stylesheet" href="{{ asset('css/register.css') }}">
 @endsection
 
-@section('nav')
-    @include('layouts.nav')
-@endsection
-
 @section('content')
     <div class="content">
         <form action="{{ route('employee.store') }}" method="POST" class="content__form">

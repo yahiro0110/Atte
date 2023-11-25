@@ -22,6 +22,8 @@ Route::post('/register', [EmployeeController::class, 'store'])->name('employee.s
 Route::get('/login', [EmployeeController::class, 'showLoginForm'])->name('employee.loginForm');
 Route::post('/login', [EmployeeController::class, 'login'])->name('employee.login');
 
+Route::get('/logout', [EmployeeController::class, 'logout'])->name('employee.logout');
+
 Route::get('/', [EmployeeController::class, 'show'])->name('employee.home');
 Route::get('/punch/{id}', [EmployeeController::class, 'punch'])->name('employee.punch');
 

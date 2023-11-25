@@ -60,6 +60,19 @@ class EmployeeController extends Controller
         ]);
     }
 
+    public function logout()
+    {
+        Auth::logout();
+
+        // セッションを無効化する
+        request()->session()->invalidate();
+
+        // セッションの再生成
+        request()->session()->regenerateToken();
+
+        return view('auth.logout');
+    }
+
     /**
      * Display a listing of the resource.
      *

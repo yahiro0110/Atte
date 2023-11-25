@@ -14,7 +14,7 @@
 
 @section('content')
     <div class="content">
-        <form action="{{ route('register.store') }}" method="POST" class="content__form">
+        <form action="{{ route('employee.store') }}" method="POST" class="content__form">
             @csrf
             <div class="content__form-title">新規登録</div>
             <div class="content__form-item">

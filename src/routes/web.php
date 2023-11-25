@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\BreaktimeController;
@@ -17,8 +16,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/register', [RegisterController::class, 'create'])->name('register.create');
-Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
+Route::get('/register', [EmployeeController::class, 'create'])->name('employee.create');
+Route::post('/register', [EmployeeController::class, 'store'])->name('employee.store');
 
 Route::get('/', [EmployeeController::class, 'show'])->name('employee.home');
 Route::get('/punch/{id}', [EmployeeController::class, 'punch'])->name('employee.punch');

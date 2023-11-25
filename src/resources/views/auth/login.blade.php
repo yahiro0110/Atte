@@ -15,10 +15,10 @@
             @error('error')
                 <div class="content__form-error">{{ $message }}</div>
             @enderror
-            @if (is_null($type))
-                <div class="content__form-title">ログイン</div>
-            @else
+            @if ($type == 'manager')
                 <div class="content__form-title">ログイン（マネージャ）</div>
+            @else
+                <div class="content__form-title">ログイン</div>
             @endif
             <div class="content__form-item">
                 <input type="email" name="email" id="email" value="{{ old('email') }}" placeholder="メールアドレス">
@@ -30,5 +30,13 @@
                 <button type="submit">ログイン</button>
             </div>
         </form>
+        <div class="content__item">
+            <p>アカウントをお持ちでない方はこちらから</p>
+            @if ($type == 'manager')
+                <a href="{{ route('employee.create', ['type' => $type]) }}">新規登録</a>
+            @else
+                <a href="{{ route('employee.create') }}">新規登録</a>
+            @endif
+        </div>
     </div>
 @endsection

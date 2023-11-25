@@ -8,7 +8,6 @@
   flex-direction: column;
   align-items: center;
   width: 500px;
-  height: 500px;
   border-radius: 5px;
   margin-top: 5rem;
   padding: 2rem;
@@ -56,5 +55,35 @@
   color: #f2f2f2;
   font-size: 1rem;
   cursor: pointer;
+  text-align: center;
+}
+.content__item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+.content__item-message {
+  padding-top: 7rem;
+  padding-bottom: 1rem;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
+.content__item p {
+  margin: 0;
+  padding-top: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #909090;
+  text-align: center;
+}
+.content__item a {
+  padding-bottom: 1rem;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #214be0;
   text-align: center;
 }/*# sourceMappingURL=register.css.map */

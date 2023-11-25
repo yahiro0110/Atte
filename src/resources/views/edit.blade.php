@@ -18,7 +18,7 @@
 
 @section('content')
     <div class="content">
-        <div class="content__message">HOGEHOGEさん、毎日の勤怠管理は大切な仕事です。記録を忘れずに入力しましょう。</div>
+        <div class="content__message">{{ auth()->user()->name }}さん、毎日の勤怠管理は大切な仕事です。記録を忘れずに入力しましょう。</div>
         <div class="content__title">
             {{ \Carbon\Carbon::parse($results->date)->locale('ja')->isoFormat('Y年M月D日(dd)') }}の編集
         </div>

@@ -21,7 +21,7 @@
         @endif
     </div>
     <div class="content">
-        <div class="content__message">HOGEHOGEさん、スタッフの勤務状況を確認し、健康管理にも注目お願いします。</div>
+        <div class="content__message">{{ auth()->user()->name }}さん、スタッフの勤務状況を確認し、健康管理にも注目お願いします。</div>
         <div class="content__title">
             <ul>
                 <li id="prevMonth">

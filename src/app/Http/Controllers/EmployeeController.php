@@ -103,12 +103,9 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    // TODO: あとで$idを実装する
     public function show()
     {
-        $employee = auth()->user();
-
-        return view('home', ['employee' => $employee]);
+        return view('home');
     }
 
     public function punch($employeeId)

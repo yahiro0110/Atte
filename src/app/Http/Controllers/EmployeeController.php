@@ -41,6 +41,25 @@ class EmployeeController extends Controller
         return redirect(RouteServiceProvider::HOME);
     }
 
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            return redirect(RouteServiceProvider::HOME);
+        }
+
+        // 認証に失敗した場合
+        return back()->withErrors([
+            'error' => 'メールアドレスまたはパスワードが違います',
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *

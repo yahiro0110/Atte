@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/register', [EmployeeController::class, 'create'])->name('employee.create');
 Route::post('/register', [EmployeeController::class, 'store'])->name('employee.store');
 
+Route::get('/login', [EmployeeController::class, 'showLoginForm'])->name('employee.loginForm');
+Route::post('/login', [EmployeeController::class, 'login'])->name('employee.login');
+
 Route::get('/', [EmployeeController::class, 'show'])->name('employee.home');
 Route::get('/punch/{id}', [EmployeeController::class, 'punch'])->name('employee.punch');
 

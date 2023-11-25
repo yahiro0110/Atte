@@ -41,7 +41,8 @@ class EmployeeController extends Controller
     // TODO: あとで$idを実装する
     public function show()
     {
-        $employee = Employee::find(1);
+        $employee = auth()->user();
+
         return view('home', ['employee' => $employee]);
     }
 

@@ -1,0 +1,35 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.content__item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+.content__item-message {
+  padding-top: 7rem;
+  padding-bottom: 1rem;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #da4040;
+  text-align: center;
+}
+.content__item p {
+  margin: 0;
+  padding-top: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #909090;
+  text-align: center;
+}
+.content__image {
+  position: relative;
+}
+.content__image img {
+  width: 700px;
+  height: 700px;
+}/*# sourceMappingURL=warning.css.map */

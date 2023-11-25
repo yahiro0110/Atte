@@ -40,7 +40,7 @@
             </div>
             <input type="hidden" name="role" value="2">
             <div class="content__form-button">
-                <button type="submit">登録</button>
+                <button type="submit">新規登録</button>
             </div>
         </form>
     </div>

@@ -4,7 +4,6 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\BreaktimeController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\EnsureUserIsAuthenticated;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +28,11 @@ Route::get('/warning', function () {
     return view('warning');
 })->name('warning');
 
-Route::middleware([EnsureUserIsAuthenticated::class])->group(function () {
+Route::get('/caution', function () {
+    return view('caution');
+})->name('caution');
+
+Route::middleware(['custom_auth'])->group(function () {
     Route::get('/', [EmployeeController::class, 'show'])->name('employee.home');
     Route::get('/punch/{id}', [EmployeeController::class, 'punch'])->name('employee.punch');
 
@@ -41,4 +44,8 @@ Route::middleware([EnsureUserIsAuthenticated::class])->group(function () {
     Route::get('/staff/attendance/', [EmployeeController::class, 'index'])->name('employee.index');
 
     Route::delete('/breaktime/delete/{id}', [BreaktimeController::class, 'destroy'])->name('breaktime.destroy');
+});
+
+Route::middleware(['custom_role:admin'])->group(function () {
+    Route::get('/staff/attendance/', [EmployeeController::class, 'index'])->name('employee.index');
 });

@@ -14,6 +14,11 @@ class Employee extends Model implements AuthenticatableContract
 
     protected $fillable = ['name', 'email', 'role', 'password'];
 
+    public function hasRole($role)
+    {
+        return $role === 'admin' && $this->role === 1;
+    }
+
     public function attendances()
     {
         return $this->hasMany(Attendance::class);

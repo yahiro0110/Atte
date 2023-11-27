@@ -9,11 +9,15 @@ use Illuminate\Support\Facades\Auth;
 class EnsureUserIsAuthenticated
 {
     /**
-     * ユーザがログインしているかどうかを確認し、ログインしていない場合は警告画面にリダイレクトする。
+     * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * このミドルウェアは、現在のユーザーが認証されているかどうかをチェックする。
+     * ユーザーが認証されていない場合は、指定された警告ルートにリダイレクトする。
+     *
+     * @param  \Illuminate\Http\Request  $request  現在のリクエストインスタンス
+     * @param  \Closure  $next  次のミドルウェアへのコールバック
+     * @return \Illuminate\Http\Response|mixed ユーザーが認証されている場合、次のミドルウェアにリクエストを渡す。
+     *                                         認証されていない場合は、特定のルートにリダイレクトする。
      */
     public function handle(Request $request, Closure $next)
     {

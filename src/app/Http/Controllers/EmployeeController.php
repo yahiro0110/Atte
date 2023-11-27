@@ -62,6 +62,7 @@ class EmployeeController extends Controller
 
     public function logout()
     {
+        $role = Auth::user()->role;
         Auth::logout();
 
         // セッションを無効化する
@@ -70,7 +71,7 @@ class EmployeeController extends Controller
         // セッションの再生成
         request()->session()->regenerateToken();
 
-        return view('auth.logout');
+        return view('auth.logout', compact('role'));
     }
 
     /**

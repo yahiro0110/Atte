@@ -13,8 +13,11 @@
         <div class="content__item">
             <div class="content__item-message">ログアウトしました</div>
             <p>もう一度ログインする場合はこちらから</p>
-            {{-- TODO:マネからログアウトした場合はまねログにとばす --}}
-            <a href="{{ route('employee.login') }}">ログイン</a>
+            @if ($role == 1)
+                <a href="{{ route('employee.loginForm', ['type' => 'manager']) }}">ログイン</a>
+            @else
+                <a href="{{ route('employee.loginForm') }}">ログイン</a>
+            @endif
         </div>
     </div>
 @endsection

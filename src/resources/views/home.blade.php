@@ -14,14 +14,14 @@
 
 @section('content')
     <div class="content">
-        <div class="content__message">{{ $employee->name }}さん、おはようございます。</div>
+        <div class="content__message">{{ auth()->user()->name }}さん、おはようございます。</div>
         <div class="content__image">
             <img src="{{ asset('img/home.svg') }}" alt="Your SVG Image">
         </div>
         <div class="content__button">
-            <a href="{{ route('employee.punch', ['id' => $employee->id]) }}">打刻</a>
+            <a href="{{ route('employee.punch', ['id' => auth()->user()->id]) }}">打刻</a>
         </div>
-        @if ($employee->role == 1)
+        @if (auth()->user()->role == 1)
             <div class="content__button">
                 <a href="{{ route('employee.index') }}">スタッフ勤怠情報</a>
             </div>

@@ -4,12 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+// Authenticatable インターフェイスとトレイトを追加
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Auth\Authenticatable;
 
-class Employee extends Model
+class Employee extends Model implements AuthenticatableContract
 {
-    use HasFactory;
+    use HasFactory, Authenticatable;
 
     protected $fillable = ['name', 'email', 'role', 'password'];
+
+    public function hasRole($role)
+    {
+        return $role === 'admin' && $this->role === 1;
+    }
 
     public function attendances()
     {

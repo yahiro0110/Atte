@@ -16,14 +16,36 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [EmployeeController::class, 'show'])->name('employee.home');
-Route::get('/punch/{id}', [EmployeeController::class, 'punch'])->name('employee.punch');
+Route::get('/register/{type?}', [EmployeeController::class, 'create'])->name('employee.create');
+Route::post('/register', [EmployeeController::class, 'store'])->name('employee.store');
 
-Route::get('/attendance/{id}', [AttendanceController::class, 'index'])->name('attendance.index');
-Route::get('/edit/{id}', [AttendanceController::class, 'show'])->name('attendance.show');
-Route::post('/edit/{id}', [AttendanceController::class, 'update'])->name('attendance.update');
-Route::post('/punch/{id}', [AttendanceController::class, 'punch'])->name('attendance.punch');
+Route::get('/login/{type?}', [EmployeeController::class, 'showLoginForm'])->name('employee.loginForm');
+Route::post('/login', [EmployeeController::class, 'login'])->name('employee.login');
 
-Route::get('/staff/attendance/', [EmployeeController::class, 'index'])->name('employee.index');
+Route::get('/logout', [EmployeeController::class, 'logout'])->name('employee.logout');
 
-Route::delete('/breaktime/delete/{id}', [BreaktimeController::class, 'destroy'])->name('breaktime.destroy');
+Route::get('/warning', function () {
+    return view('warning');
+})->name('warning');
+
+Route::get('/caution', function () {
+    return view('caution');
+})->name('caution');
+
+Route::middleware(['custom_auth'])->group(function () {
+    Route::get('/', [EmployeeController::class, 'show'])->name('employee.home');
+    Route::get('/punch/{id}', [EmployeeController::class, 'punch'])->name('employee.punch');
+
+    Route::get('/attendance/{id}', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::get('/edit/{id}', [AttendanceController::class, 'show'])->name('attendance.show');
+    Route::post('/edit/{id}', [AttendanceController::class, 'update'])->name('attendance.update');
+    Route::post('/punch/{id}', [AttendanceController::class, 'punch'])->name('attendance.punch');
+
+    Route::get('/staff/attendance/', [EmployeeController::class, 'index'])->name('employee.index');
+
+    Route::delete('/breaktime/delete/{id}', [BreaktimeController::class, 'destroy'])->name('breaktime.destroy');
+});
+
+Route::middleware(['custom_role:admin'])->group(function () {
+    Route::get('/staff/attendance/', [EmployeeController::class, 'index'])->name('employee.index');
+});

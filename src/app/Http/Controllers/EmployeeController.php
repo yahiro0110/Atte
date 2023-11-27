@@ -5,9 +5,74 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\Attendance;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class EmployeeController extends Controller
 {
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create($type = null)
+    {
+        return view('auth.register', compact('type'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $user = Employee::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role'  => $request->role,
+            'password' => Hash::make($request->password),
+        ]);
+
+        Auth::login($user);
+
+        return redirect(RouteServiceProvider::HOME);
+    }
+
+    public function showLoginForm($type = null)
+    {
+        return view('auth.login', compact('type'));
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            return redirect(RouteServiceProvider::HOME);
+        }
+
+        // 認証に失敗した場合
+        return back()->withErrors([
+            'error' => 'メールアドレスまたはパスワードが違います',
+        ]);
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+
+        // セッションを無効化する
+        request()->session()->invalidate();
+
+        // セッションの再生成
+        request()->session()->regenerateToken();
+
+        return view('auth.logout');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -38,11 +103,9 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    // TODO: あとで$idを実装する
     public function show()
     {
-        $employee = Employee::find(1);
-        return view('home', ['employee' => $employee]);
+        return view('home');
     }
 
     public function punch($employeeId)

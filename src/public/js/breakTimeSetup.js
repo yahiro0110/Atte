@@ -57,6 +57,9 @@ function addBreakTime() {
 function createBreakTimeArea(breakNumber) {
     const div = document.createElement("div");
     div.className = "content__form-inputsubarea-time";
+    // *REF JavaScriptで追加された休憩時間エリアのみを対象とする場合は以下のコメントを外す
+    // * 新しい休憩時間エリアに属性を設定
+    // * div.setAttribute("data-new-breaktime", "true");
     div.innerHTML = `
         <input type="hidden" name="breaktime_ids[]" value="0">
         <label for="">${breakNumber}回目<br>(新規)</label>
@@ -64,6 +67,7 @@ function createBreakTimeArea(breakNumber) {
         <span>-</span>
         <input type="time" name="breaktime_end_time[]" value="00:00:00" />
         <button type="button">削除</button>
+        <div class="content__form-error" style="display: none;">終了時刻は開始時刻よりも後でなければなりません</div>
     `; // HTMLコンテンツの設定
     return div;
 }
@@ -123,7 +127,10 @@ function handleResponse(response) {
  */
 function addInputEventListeners(div) {
     div.querySelectorAll('input[type="time"]').forEach((input) => {
-        input.addEventListener("input", updateTotalTime); // 入力イベントリスナーの追加
+        input.addEventListener("input", function () {
+            updateTotalTime(); // 入力イベントリスナーの追加
+            validateBreakTime(input); // 休憩時間の妥当性チェック
+        });
     });
 }
 
@@ -168,4 +175,28 @@ function calculateDifferences() {
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+}
+
+/**
+ * 休憩時間の妥当性をチェックする。
+ * @param {HTMLInputElement} input - 休憩時間のinput要素
+ */
+function validateBreakTime(input) {
+    const div = input.closest(".content__form-inputsubarea-time");
+    // *REF JavaScriptで追加された休憩時間エリアのみを対象とする場合は以下のコメントを外す
+    // * 新しく追加された休憩時間エリアかどうかを確認
+    // * if (div.getAttribute("data-new-breaktime") !== "true") {
+    // *     return; // 新しく追加されたエリアでなければ何もしない
+    // * }
+    const errorDiv = div.querySelector(".content__form-error");
+    const startTimeInput = div.querySelector('input[name="breaktime_start_time[]"]');
+    const endTimeInput = div.querySelector('input[name="breaktime_end_time[]"]');
+    const startTime = timeToSeconds(startTimeInput.value);
+    const endTime = timeToSeconds(endTimeInput.value);
+
+    if (startTime >= endTime) {
+        errorDiv.style.display = "block"; // エラーメッセージを表示
+    } else {
+        errorDiv.style.display = "none"; // エラーメッセージを非表示
+    }
 }

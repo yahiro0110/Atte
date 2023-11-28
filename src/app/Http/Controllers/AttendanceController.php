@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InputTimeRequest;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\Breaktime;
@@ -96,7 +97,7 @@ class AttendanceController extends Controller
      * @param int $attendanceId 更新する出勤・退勤レコードのID
      * @return \Illuminate\Http\RedirectResponse 勤怠一覧ページへのリダイレクト
      */
-    public function update(Request $request, $attendanceId)
+    public function update(InputTimeRequest $request, $attendanceId)
     {
         // 出勤・退勤レコードの更新
         $attendance = $this->updateAttendance($request, $attendanceId);

@@ -32,13 +32,21 @@
                     <label for="">勤務開始</label>
                     <span>{{ \Carbon\Carbon::parse($results->start_time)->format('H:i') }}</span>
                     <span class="content__form-inputarea-allow">&#9654;</span>
-                    <input type="time" name="start_time" value="{{ $results->start_time }}">
+                    <input type="time" name="start_time"
+                        value="{{ old('start_time') ? old('start_time') : \Carbon\Carbon::parse($results->start_time)->format('H:i') }}">
+                    @error('start_time')
+                        <div class="content__form-error">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class='content__form-inputarea'>
                     <label for="">勤務終了</label>
                     <span>{{ \Carbon\Carbon::parse($results->end_time)->format('H:i') }}</span>
                     <span class="content__form-inputarea-allow">&#9654;</span>
-                    <input type="time" name="end_time" value="{{ $results->end_time }}">
+                    <input type="time" name="end_time"
+                        value="{{ old('end_time') ? old('end_time') : \Carbon\Carbon::parse($results->end_time)->format('H:i') }}">
+                    @error('end_time')
+                        <div class="content__form-error">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class='content__form-title'>休憩時間の調整</div>
@@ -53,20 +61,18 @@
                         <button type="button" id="add-break-time">休憩時間追加</button>
                     </div>
                     @if ($results->breaktimes)
-                        @php
-                            $breakTimeCount = 0;
-                        @endphp
                         @foreach ($results->breaktimes as $breaktime)
                             <div class="content__form-inputsubarea-time">
                                 <input type="hidden" name="breaktime_ids[]" value="{{ $breaktime->id }}">
-                                @php
-                                    $breakTimeCount++;
-                                @endphp
-                                <label for="">{{ $breakTimeCount }}回目</label>
+                                <label for="">{{ $loop->iteration }}回目</label>
                                 <input type="time" name="breaktime_start_time[]" value="{{ $breaktime->start_time }}">
                                 <span>-</span>
                                 <input type="time" name="breaktime_end_time[]" value="{{ $breaktime->end_time }}">
                                 <button type="button" class="delete-btn" value="{{ $breaktime->id }}">削除</button>
+                                <div class="content__form-error" style="display: none;">終了時刻は開始時刻よりも後でなければなりません</div>
+                                @error("breaktime_end_time.{$loop->index}")
+                                    <div class="content__form-error">{{ $message }}</div>
+                                @enderror
                             </div>
                         @endforeach
                     @endif

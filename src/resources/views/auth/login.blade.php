@@ -13,7 +13,7 @@
         <form action="{{ route('employee.login') }}" method="POST" class="content__form">
             @csrf
             @error('error')
-                <div class="content__form-error">{{ $message }}</div>
+                <div class="content__form-error-message">{{ $message }}</div>
             @enderror
             @if ($type == 'manager')
                 <div class="content__form-title">ログイン（マネージャ）</div>
@@ -22,9 +22,15 @@
             @endif
             <div class="content__form-item">
                 <input type="email" name="email" id="email" value="{{ old('email') }}" placeholder="メールアドレス">
+                @error('email')
+                    <div class="content__form-error">{{ $message }}</div>
+                @enderror
             </div>
             <div class="content__form-item">
                 <input type="password" name="password" id="password" placeholder="パスワード">
+                @error('password')
+                    <div class="content__form-error">{{ $message }}</div>
+                @enderror
             </div>
             <div class="content__form-button">
                 <button type="submit">ログイン</button>
@@ -39,4 +45,5 @@
             @endif
         </div>
     </div>
+    <script src="{{ asset('js/inputErrorStyles.js') }}"></script>
 @endsection

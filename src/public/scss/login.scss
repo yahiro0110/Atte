@@ -10,11 +10,23 @@
         border-radius: 5px;
         margin-top: 5rem;
         padding: 2rem;
-        &-error {
+        position: relative;
+        &-error-message {
             color: #da4040;
             font-size: 1rem;
             font-weight: bold;
-            margin-bottom: 2rem;
+            position: absolute;
+            top: -1rem;
+        }
+        &-error {
+            color: #da4040;
+            font-size: 0.75rem;
+            font-weight: bold;
+            align-self: flex-start;
+            padding-top: 3.25rem;
+            padding-left: 1.25rem;
+            position: absolute;
+            z-index: 1;
         }
         &-title {
             font-size: 1.5rem;
@@ -27,6 +39,7 @@
             width: 100%;
             margin-bottom: 2rem;
             align-items: center;
+            position: relative;
             input {
                 background-color: #fafafa;
                 width: 400px;
@@ -35,6 +48,7 @@
                 border-radius: 5px;
                 padding: 0.5rem;
                 font-size: 1rem;
+                z-index: 2;
             }
             input::placeholder {
                 color: #909090;

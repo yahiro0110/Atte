@@ -11,6 +11,7 @@
   border-radius: 5px;
   margin-top: 5rem;
   padding: 2rem;
+  position: relative;
 }
 .content__form-title {
   font-size: 1.5rem;
@@ -32,6 +33,7 @@
   border-radius: 5px;
   padding: 0.5rem;
   font-size: 1rem;
+  z-index: 2;
 }
 .content__form-item input::-moz-placeholder {
   color: #909090;
@@ -56,6 +58,16 @@
   font-size: 1rem;
   cursor: pointer;
   text-align: center;
+}
+.content__form-error {
+  color: #da4040;
+  font-size: 0.75rem;
+  font-weight: bold;
+  align-self: flex-start;
+  padding-top: 3.25rem;
+  padding-left: 1.25rem;
+  position: absolute;
+  z-index: 1;
 }
 .content__item {
   display: flex;

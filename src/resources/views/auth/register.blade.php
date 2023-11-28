@@ -56,4 +56,5 @@
             @endif
         </div>
     </div>
+    <script src="{{ asset('js/inputErrorStyles.js') }}"></script>
 @endsection

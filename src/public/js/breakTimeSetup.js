@@ -22,9 +22,7 @@ function setupAddBreakTimeButton() {
  * すべての休憩時間エリアにイベントリスナー（入力時、削除ボタンクリック時）を設定する。
  */
 function initializeTimeCalculations() {
-    document
-        .querySelectorAll(".content__form-inputsubarea-time")
-        .forEach(setupBreakTimeArea);
+    document.querySelectorAll(".content__form-inputsubarea-time").forEach(setupBreakTimeArea);
 }
 
 /**
@@ -40,17 +38,13 @@ function setupBreakTimeArea(div) {
  * 休憩時間エリアを追加する。
  */
 function addBreakTime() {
-    const breakCount = document.querySelectorAll(
-        ".content__form-inputsubarea-time"
-    ).length; // 既存の休憩時間エリアの数
+    const breakCount = document.querySelectorAll(".content__form-inputsubarea-time").length; // 既存の休憩時間エリアの数
     const newBreakTime = createBreakTimeArea(breakCount + 1); // 新しい休憩時間エリアの作成
     newBreakTime.querySelector("button").onclick = function () {
         newBreakTime.remove(); // 削除ボタンのクリック時の処理
         updateTotalTime(); // 合計時間の更新
     };
-    document
-        .querySelector(".content__form-inputsubarea")
-        .appendChild(newBreakTime); // 新しいエリアの追加
+    document.querySelector(".content__form-inputsubarea").appendChild(newBreakTime); // 新しいエリアの追加
     setupBreakTimeArea(newBreakTime); // 新しいエリアの設定
     updateTotalTime(); // 合計時間の更新
 }
@@ -92,9 +86,7 @@ function setupDeleteButton(div) {
  */
 function deleteBreakTime(div, breaktimeId) {
     if (confirm("本当に削除しますか？")) {
-        var csrfToken = document
-            .querySelector('meta[name="csrf-token"]')
-            .getAttribute("content"); // CSRFトークンの取得
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content"); // CSRFトークンの取得
         fetch("/breaktime/delete/" + breaktimeId, {
             method: "DELETE",
             headers: {
@@ -161,23 +153,19 @@ function timeToSeconds(time) {
 function calculateDifferences() {
     // 合計秒数を計算
     let totalSeconds = 0;
-    document
-        .querySelectorAll(".content__form-inputsubarea-time")
-        .forEach((div) => {
-            // 各休憩時間エリアの開始時間と終了時間を取得
-            const inputs = div.querySelectorAll('input[type="time"]');
-            const startTime = timeToSeconds(inputs[0].value);
-            const endTime = timeToSeconds(inputs[1].value);
-            // 差分を計算
-            const difference = endTime - startTime;
-            // 合計に加算
-            totalSeconds += difference;
-        });
+    document.querySelectorAll(".content__form-inputsubarea-time").forEach((div) => {
+        // 各休憩時間エリアの開始時間と終了時間を取得
+        const inputs = div.querySelectorAll('input[type="time"]');
+        const startTime = timeToSeconds(inputs[0].value);
+        const endTime = timeToSeconds(inputs[1].value);
+        // 差分を計算
+        const difference = endTime - startTime;
+        // 合計に加算
+        totalSeconds += difference;
+    });
 
-    // 合計秒数をHH:MM:SS形式に変換
+    // 合計秒数をHH:MM形式に変換
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
-    return `${hours.toString().padStart(2, "0")}:${minutes
-        .toString()
-        .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
 }

@@ -14,9 +14,9 @@
 <body>
     <header class="header">
         <div class="header__inner">
-            <a href="#" class="header__logo">
+            <span class="header__logo">
                 <img src="{{ asset('img/logo.svg') }}" alt="Your SVG Image">
-            </a>
+            </span>
             @yield('nav')
         </div>
     </header>

@@ -9,32 +9,115 @@ use DateTime;
 use DateTimeImmutable;
 use Carbon\Carbon;
 
+/**
+ * 勤怠情報を表すモデル。
+ *
+ * 従業員の勤怠情報を保持し、関連する勤怠情報の計算や勤務状況の判定などの機能を提供する。
+ */
 class Attendance extends Model
 {
     use HasFactory;
 
+    // --------------------------------------------------------------------------------
+    // モデル属性とリレーションシップ
+    // --------------------------------------------------------------------------------
+
+    /**
+     * 従業員の勤務状態を表す定数。
+     *
+     * 各状態は数値で表され、勤怠管理において以下の異なる状況を識別するために使用される：
+     * - `clockIn` : 出勤
+     * - `onBreak` : 休憩中
+     * - `offBreak` : 休憩終了
+     * - `clockOut` : 退勤
+     * - `noClockOut` : 退勤打刻なし
+     * - `noWork` : 勤務なし
+     */
     const WORK_STATUSES = [
-        'clockIn' => 1,      // 出勤
-        'onBreak' => 2,      // 休憩中
-        'offBreak' => 3,     // 休憩終了
-        'clockOut' => 4,     // 退勤
-        'noClockOut' => 5,   // 退勤打刻なし
-        'noWork' => 6        // 勤務なし
+        'clockIn' => 1,
+        'onBreak' => 2,
+        'offBreak' => 3,
+        'clockOut' => 4,
+        'noClockOut' => 5,
+        'noWork' => 6
     ];
 
+    /**
+     * マスアサインメントで使用可能な属性。
+     *
+     * この属性リストを通じて、createやupdateメソッドなどで一括して割り当て可能なモデルの属性を定義する。
+     * - `employee_id` : 従業員ID
+     * - `date` : 日付
+     * - `start_time` : 出勤時刻
+     * - `end_time` : 退勤時刻
+     * - `work_status` : 勤務状態
+     *
+     * @var array
+     */
     protected $fillable = ['employee_id', 'date', 'start_time', 'end_time', 'work_status'];
 
-    // カスタム属性(休憩時間の合計と勤務時間の合計)を追加
+    /**
+     * モデルのJSON表現に追加されるアクセサ属性。
+     *
+     * このプロパティは、モデルがJSONに変換される際に、モデルの標準の属性に加えて含めるべき追加の属性を指定する。
+     * - `total_break_time` : 休憩時間の合計
+     * - `total_work_time` : 勤務時間の合計
+     *
+     * @var array
+     */
     protected $append = ['total_break_time', 'total_work_time'];
 
+    /**
+     * この勤怠レコードに関連付けられている従業員エンティティを取得するリレーションシップ。
+     *
+     * `Employee` モデルとの "BelongsTo" 関連を定義する。
+     * これにより、特定の勤怠レコードに関連付けられている従業員の情報にアクセスできるようになる。
+     * （例えば、勤怠レコードから直接関連する従業員の名前や他の属性にアクセスする場合に使用）
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo 勤怠レコードに関連する従業員モデルへのリレーションシップ
+     */
     public function employee()
     {
         return $this->belongsTo(Employee::class);
     }
 
+    /**
+     * この勤怠レコードに関連付けられている全ての休憩時間を取得するリレーションシップ。
+     *
+     * `Breaktime` モデルとの "HasMany" 関連を定義する。
+     * これにより、特定の勤怠レコードに関連する複数の休憩時間のレコードにアクセスできるようになる。
+     * （例えば、勤怠レコードに紐づく全ての休憩時間を取得したい場合などに使用）
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany 勤怠レコードに関連する休憩時間のモデルのコレクションへのリレーションシップ
+     */
     public function breaktimes()
     {
         return $this->hasMany(Breaktime::class);
+    }
+
+    // --------------------------------------------------------------------------------
+    // クエリスコープとカスタムメソッド
+    // --------------------------------------------------------------------------------
+
+    /**
+     * 指定された従業員ID、年、月に基づいて勤怠レコードを取得するクエリスコープ。
+     *
+     * このスコープは `Attendance` モデルに対して、特定の従業員ID、年、月に該当する
+     * 勤怠レコードを絞り込むために使用される。このメソッドを通じて、効率的に
+     * 必要なレコードを取得し、関連する休憩時間のレコードも同時にEager Loadingする。
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query 現在のクエリビルダーインスタンス
+     * @param int $employeeId 取得したい勤怠レコードの従業員ID
+     * @param int $year 取得したい勤怠レコードの年
+     * @param int $month 取得したい勤怠レコードの月
+     * @return \Illuminate\Database\Eloquent\Builder 更新されたクエリビルダーインスタンス
+     */
+    public function scopeForEmployeeAndMonth($query, $employeeId, $year, $month)
+    {
+        return $query->with('breaktimes')
+            ->where('employee_id', $employeeId)
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month);
     }
 
     /**
@@ -121,6 +204,10 @@ class Attendance extends Model
     {
         return ($interval->h * 3600) + ($interval->i * 60) + $interval->s;
     }
+
+    // --------------------------------------------------------------------------------
+    // 静的ヘルパーメソッド
+    // --------------------------------------------------------------------------------
 
     /**
      * 指定された年と月に基づいて、勤怠レコードのコレクションを生成する。

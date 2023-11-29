@@ -39,9 +39,9 @@
         <div class="content__item">
             <p>アカウントをお持ちでない方はこちらから</p>
             @if ($type == 'manager')
-                <a href="{{ route('employee.create', ['type' => $type]) }}">新規登録</a>
+                <a href="{{ route('employee.createForm', ['type' => $type]) }}">新規登録</a>
             @else
-                <a href="{{ route('employee.create') }}">新規登録</a>
+                <a href="{{ route('employee.createForm') }}">新規登録</a>
             @endif
         </div>
     </div>

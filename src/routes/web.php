@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // 新規登録画面
-Route::get('/register/{type?}', [EmployeeController::class, 'create'])->name('employee.create');
+Route::get('/register/{type?}', [EmployeeController::class, 'showCreateForm'])->name('employee.createForm');
 Route::post('/register', [EmployeeController::class, 'store'])->name('employee.store');
 
 // ログイン画面

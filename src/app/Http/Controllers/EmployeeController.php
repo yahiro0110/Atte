@@ -18,7 +18,7 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($type = null)
+    public function showCreateForm($type = null)
     {
         return view('auth.register', compact('type'));
     }

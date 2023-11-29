@@ -31,9 +31,13 @@ class Employee extends Model implements AuthenticatableContract
     }
 
     /**
-     * この従業員に関連する出勤記録を取得する。
+     * この従業員に関連付けられている全ての勤怠レコードを取得するリレーションシップ。
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany 出勤記録のリレーション
+     * `Attendance` モデルとの "HasMany" 関連を定義する。
+     * これにより、特定の従業員に関連する複数の勤怠レコードにアクセスできるようになる。
+     * （例えば、従業員の全勤怠履歴を取得したい場合などに使用）
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany 従業員に関連する勤怠レコードのモデルのコレクションへのリレーションシップ
      */
     public function attendances()
     {
@@ -41,10 +45,13 @@ class Employee extends Model implements AuthenticatableContract
     }
 
     /**
-     * この従業員の現在の出勤記録を取得する。
-     * 補足：打刻画面で使用する。
+     * この従業員に関連付けられている、特定の日付（今日）の勤怠レコードを取得するリレーションシップ。
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne 現在の出勤記録のリレーション
+     * `Attendance` モデルとの "HasOne" 関連を定義しており、現在の日付に対応する勤怠レコードを取得する。
+     * これにより、従業員の当日の勤怠状況にアクセスできるようになる。
+     * （例えば、従業員の本日の出勤情報や退勤情報を取得する際に使用し、主に打刻画面で情報を提供）
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne 従業員に関連する特定日付の勤怠レコードへのリレーションシップ
      */
     public function attendance()
     {

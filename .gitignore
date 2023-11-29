@@ -14,4 +14,3 @@ src/resources/views/vendor/pagination/simple-bootstrap-4.blade.php
 src/resources/views/vendor/pagination/simple-default.blade.php
 src/resources/views/vendor/pagination/simple-tailwind.blade.php
 src/resources/views/vendor/pagination/tailwind.blade.php
-drawio/*

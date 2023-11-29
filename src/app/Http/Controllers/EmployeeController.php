@@ -6,7 +6,6 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Http\Request;
 use App\Models\Employee;
-use App\Models\Attendance;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -14,9 +13,14 @@ use Illuminate\Support\Facades\Hash;
 class EmployeeController extends Controller
 {
     /**
-     * Show the form for creating a new resource.
+     * 特定のタイプの新規登録画面を表示する。
      *
-     * @return \Illuminate\Http\Response
+     * タイプがmanagerの場合は、マネージャーのユーザ登録フォームを表示する。
+     * タイプがmanager以外または指定されていない場合は、スタッフのユーザ登録フォームが表示される。
+     *
+     * @param string|null $type ユーザーのタイプ（manager: マネージャ、それ以外: スタッフ）
+     *                    指定されていない場合はnull
+     * @return \Illuminate\View\View ユーザー登録フォームのビュー
      */
     public function showCreateForm($type = null)
     {
@@ -24,10 +28,13 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 新しい従業員を登録し、自動的にログインする。
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * フォームリクエストから受け取ったデータを使用して、新しい従業員をデータベースに登録する。
+     * 登録が完了すると、その従業員で自動的にログインし、ホームページにリダイレクトする。
+     *
+     * @param RegisterRequest $request ユーザー登録に関するリクエストデータ
+     * @return \Illuminate\Http\RedirectResponse ホームページへのリダイレクトレスポンス
      */
     public function store(RegisterRequest $request)
     {
@@ -43,11 +50,30 @@ class EmployeeController extends Controller
         return redirect(RouteServiceProvider::HOME);
     }
 
+    /**
+     * ログイン画面を表示する。
+     *
+     * タイプがmanagerの場合は、マネージャーのログインフォームを表示する。
+     * タイプがmanager以外または指定されていない場合は、スタッフのログインフォームが表示される。
+     *
+     * @param string|null $type ユーザーのタイプ（manager: マネージャ、それ以外: スタッフ）
+     *                    指定されていない場合はnull
+     * @return \Illuminate\View\View ログインフォームのビュー
+     */
     public function showLoginForm($type = null)
     {
         return view('auth.login', compact('type'));
     }
 
+    /**
+     * ユーザーのログイン処理をおこなう。
+     *
+     * リクエストからメールアドレスとパスワードを取得し、認証を試みる。
+     * 認証に成功した場合はホーム画面にリダイレクトし、失敗した場合はエラーメッセージとともに前のページに戻る。
+     *
+     * @param LoginRequest $request ログインに関するリクエストデータ
+     * @return \Illuminate\Http\RedirectResponse ログイン成功時はホーム画面へ、失敗時は前のページへのリダイレクトレスポンス
+     */
     public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
@@ -62,6 +88,14 @@ class EmployeeController extends Controller
         ]);
     }
 
+    /**
+     * ユーザーのログアウト処理を行い、ログアウト画面を表示する。
+     *
+     * 現在のユーザーをログアウトさせ、セッションを無効化し再生成する。
+     * ログアウト後は、ユーザーのロールに基づいたログアウトビューが表示される。
+     *
+     * @return \Illuminate\View\View ログアウト後のビュー
+     */
     public function logout()
     {
         $role = Auth::user()->role;
@@ -77,9 +111,50 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * ホーム画面を表示する。
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View ホーム画面のビュー
+     */
+    public function show()
+    {
+        return view('home');
+    }
+
+    /**
+     * 従業員の打刻画面を表示する。
+     *
+     * 指定された従業員IDに基づいて従業員の勤怠情報を検索する。
+     * 従業員が存在し、勤怠情報がある場合、その勤務状況をセッションに保存し、
+     * 対応するビューにこれらの情報を渡す。
+     *
+     * @param int $employeeId 検索する従業員のID
+     * @return \Illuminate\View\View 従業員の勤怠状況を表示するビュー
+     */
+    public function punch($employeeId)
+    {
+        // 従業員テーブル、出勤・退勤テーブルから該当従業員のレコードを取得
+        $result = Employee::with('attendance')->find($employeeId);
+
+        // 従業員の勤務状況を取得
+        $workStatus = $result ? $result->getCurrentWorkStatus() : null;
+
+        // 勤務状況をセッションに保存
+        session()->flash('work_status', $workStatus);
+
+        return view('punch', ['result' => $result]);
+    }
+
+    /**
+     * スタッフ勤怠情報画面を表示する。
+     *
+     * 指定された日付に基づいて従業員の出勤・退勤レコードを表示する。
+     * リクエストから年、月、日のクエリパラメータを取得し、それらを使用して出勤・退勤レコードを検索する。
+     * 検索結果には休憩時間や勤務時間の計算も含まれ、最終的にスタッフのインデックスページに表示される。
+     *
+     * 補足：スタッフ勤怠情報にマネージャーの情報も含まれる。
+     *
+     * @param Request $request HTTPリクエストオブジェクト
+     * @return \Illuminate\View\View 従業員の出勤・退勤レコードが含まれたビュー
      */
     public function index(Request $request)
     {
@@ -98,60 +173,5 @@ class EmployeeController extends Controller
         $results->appends($request->all());
 
         return view('staff_index', compact('results'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function show()
-    {
-        return view('home');
-    }
-
-    public function punch($employeeId)
-    {
-        $result = Employee::with('attendance')->find($employeeId);
-
-        if ($result && $result->attendance) {
-            // TODO: switch文を使用しなくとも、$result->attendance->work_statusをそのままビューに渡せばよい
-            switch ($result->attendance->work_status) {
-                case '1':
-                    $workStatus = Attendance::WORK_STATUSES['clockIn'];
-                    break;
-
-                case '2':
-                    $workStatus = Attendance::WORK_STATUSES['onBreak'];
-                    break;
-
-                case '3':
-                    $workStatus = Attendance::WORK_STATUSES['offBreak'];
-                    break;
-
-                case '4':
-                    $workStatus = Attendance::WORK_STATUSES['clockOut'];
-                    break;
-
-                case '5':
-                    $workStatus = Attendance::WORK_STATUSES['noClockOut'];
-                    break;
-
-                case '6':
-                    $workStatus = Attendance::WORK_STATUSES['noWork'];
-                    break;
-
-                default:
-                    $workStatus = 0;
-                    break;
-            }
-        } else {
-            $workStatus = null;
-        }
-
-        session()->flash('work_status', $workStatus);
-
-        return view('punch', ['result' => $result]);
     }
 }

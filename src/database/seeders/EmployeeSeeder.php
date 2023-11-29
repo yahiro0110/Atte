@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Employee;
+use Illuminate\Support\Facades\Hash;
 
 class EmployeeSeeder extends Seeder
 {
@@ -20,13 +21,13 @@ class EmployeeSeeder extends Seeder
                 'name' => 'マネージャ',
                 'email' => 'manager@example.com',
                 'role' => '1',
-                'password' => 'manage'
+                'password' => Hash::make('password-manager')
             ],
             [
                 'name' => 'スタッフ',
                 'email' => 'staff@example.com',
                 'role' => '2',
-                'password' => 'staff'
+                'password' => Hash::make('password-staff')
             ]
         ];
 

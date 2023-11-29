@@ -1,0 +1,124 @@
+@charset "UTF-8";
+.header {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+/*--------------------------------------------------
+    アラートメッセージエリア
+    --------------------------------------------------*/
+.alert__success {
+  padding: 20px 30px;
+  border-color: #badbcc;
+  background-color: #d1e7dd;
+  color: #0f5132;
+  animation: fadeOut 8s;
+  animation-fill-mode: forwards; /* アニメーション終了後も最終フレームを維持 */
+  position: absolute; /* 絶対位置指定 */
+  top: 0px; /* 他のコンテンツの上に配置 */
+  left: 0; /* 他のコンテンツの左に配置 */
+  width: 100%; /* 横幅を親要素いっぱいに */
+  margin-top: 100px; /* メッセージエリアの表示縦位置を調整 */
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 100px;
+  overflow: auto;
+  /*--------------------------------------------------
+  メッセージエリア
+  --------------------------------------------------*/
+  /*--------------------------------------------------
+  日付エリア
+  --------------------------------------------------*/
+}
+.content__message {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 4rem;
+  width: 1500px;
+  font-size: 20px;
+}
+.content__title {
+  font-size: 1.25rem;
+}
+.content__title ul {
+  display: flex;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+}
+.content__title li {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.content__title li:has(a) {
+  border: 1px solid #214be0;
+  background-color: #fafafa;
+}
+.content__title a {
+  text-decoration: none;
+  color: #214be0;
+  display: block;
+}
+.content__table {
+  padding-top: 1rem;
+  padding-bottom: 4rem;
+  display: flex;
+  justify-content: center; /* テーブルを水平中央に配置 */
+  align-items: center;
+}
+.content__table-container {
+  margin: 0;
+  width: 1000px;
+  border-collapse: collapse; /* セルの境界線を結合 */
+}
+.content__table-container th,
+.content__table-container td {
+  border: none; /* すべての境界線を非表示 */
+  border-bottom: 1px solid #909090;
+  padding: 15px;
+  text-align: left;
+}
+.content__table-container th {
+  border-top: 1px solid #909090;
+}
+.content__table-container td {
+  white-space: normal;
+}
+.content__table-tr-weekend {
+  background-color: #909090;
+}
+.content__table-td-date {
+  width: 175px;
+}
+.content__table-td-time {
+  width: 180px;
+}
+.content__table-btn {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  width: 200px;
+  border-radius: 5px;
+  background: #214be0;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  color: #f2f2f2;
+  font-size: 0.8rem;
+}/*# sourceMappingURL=index.css.map */

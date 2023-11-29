@@ -1,0 +1,188 @@
+@charset "UTF-8";
+/*--------------------------------------------------
+input=timeのカスタマイズ（アイコンを非表示に設定）
+--------------------------------------------------*/
+input[type=time] {
+  position: relative;
+  padding-left: 20px;
+}
+input[type=time]::after {
+  font-family: FontAwesome;
+  content: "\f017";
+  color: #fff;
+}
+input[type=time].calculatetimes::after {
+  color: #f2f2f2;
+}
+input[type=time]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  color: transparent;
+  background: transparent;
+  z-index: 100;
+}
+
+/*--------------------------------------------------
+ヘッダー
+--------------------------------------------------*/
+.header {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/*--------------------------------------------------
+コンテンツ
+--------------------------------------------------*/
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 100px;
+  overflow: auto;
+  height: 94vh;
+  /* メッセージエリア
+  ----------------------------------------*/
+  /* 勤務時間の調整エリア
+  ----------------------------------------*/
+}
+.content__message {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 4rem;
+  width: 1500px;
+  font-size: 20px;
+}
+.content__title {
+  font-size: 1.5rem;
+  padding-top: 2rem;
+  width: 500px;
+}
+.content__form {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 500px;
+}
+.content__form-title {
+  padding-top: 3.5rem;
+  padding-bottom: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  border-bottom: 1.75px solid #19191b;
+}
+.content__form-inputarea {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.5rem;
+  padding-bottom: 1rem;
+  width: 400px;
+  font-size: 1rem;
+  position: relative;
+}
+.content__form-inputarea-allow {
+  color: #61646b;
+}
+.content__form-inputarea label {
+  padding-left: 1rem;
+  font-weight: bold;
+}
+.content__form-inputarea input {
+  width: 100px;
+  height: 40px;
+  margin-right: 1rem;
+  border: 1px solid #19191b;
+  border-radius: 5px;
+  font-size: 1.15rem;
+  text-align: center;
+  z-index: 2;
+}
+.content__form-inputarea input[readonly] {
+  background-color: #f2f2f2;
+}
+.content__form-inputarea.breaktime {
+  padding-bottom: 2rem;
+}
+.content__form-inputsubarea {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  font-size: 1rem;
+}
+.content__form-inputsubarea-button {
+  padding-bottom: 1rem;
+  margin-right: auto;
+}
+.content__form-inputsubarea-time {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 2.5rem;
+  width: 350px;
+  font-size: 1rem;
+}
+.content__form-inputsubarea-time label {
+  width: 70px;
+  font-weight: bold;
+}
+.content__form-inputsubarea-time input {
+  width: 100px;
+  height: 40px;
+  border: 1px solid #19191b;
+  border-radius: 5px;
+  font-size: 1.15rem;
+  text-align: center;
+  z-index: 2;
+}
+.content__form-inputsubarea-time button {
+  margin-left: 0.5rem;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  font-family: inherit;
+  cursor: pointer;
+  background-color: #da4040;
+  color: #f2f2f2;
+  border-radius: 5px;
+  z-index: 2;
+}
+.content__form-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3rem;
+  margin-bottom: 5rem;
+}
+.content__form-button button {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  padding: 0.75rem;
+  width: 100px;
+  border-radius: 5px;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  font-family: inherit;
+  cursor: pointer;
+  background: #214be0;
+  color: #f2f2f2;
+  font-size: 1rem;
+}
+.content__form-error {
+  color: #da4040;
+  font-size: 1rem;
+  font-weight: bold;
+  align-self: flex-start;
+  padding-top: 3rem;
+  padding-left: 1.25rem;
+  position: absolute;
+  flex: 0 0 auto;
+  z-index: 1;
+}/*# sourceMappingURL=edit.css.map */

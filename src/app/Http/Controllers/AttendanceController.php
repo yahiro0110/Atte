@@ -151,6 +151,17 @@ class AttendanceController extends Controller
         }
     }
 
+    /**
+     * 指定された従業員の出勤・退勤時刻と休憩時刻を打刻する。
+     *
+     * このメソッドは、従業員の出勤・退勤および休憩の打刻を行う。
+     * 打刻タイプに応じて、対応する処理（出勤、退勤、休憩開始、休憩終了）が実行される。
+     * 完了後、打刻の結果と現在の勤務状態がJSONレスポンスとして返される。
+     *
+     * @param \Illuminate\Http\Request $request HTTPリクエストインスタンス
+     * @param int $employeeId 従業員ID
+     * @return \Illuminate\Http\JsonResponse 打刻処理の結果
+     */
     public function punch(Request $request, $employeeId)
     {
         // 今日の日付かつ指定の従業員IDを持つレコードを検索
@@ -230,6 +241,15 @@ class AttendanceController extends Controller
         return response()->json(['message' => $message, 'employee_name' => $employeeName, 'work_status' => $workStatus]);
     }
 
+    /**
+     * 従業員の出勤時刻を登録する。
+     *
+     * このメソッドは、指定された従業員IDに対して現在の日付と時刻を使用して出勤記録を作成する。
+     * 出勤時刻として現在時刻が登録され、作業状態は「出勤中」に設定される。
+     *
+     * @param int $employeeId 従業員のID
+     * @return string 登録完了メッセージ
+     */
     private function addClockInTime($employeeId)
     {
         Attendance::create([
@@ -242,6 +262,15 @@ class AttendanceController extends Controller
         return '出勤時刻を登録しました';
     }
 
+    /**
+     * 従業員の退勤時刻を登録する。
+     *
+     * このメソッドは、指定された出勤・退勤レコードに退勤時刻を更新する。
+     * 退勤時刻として現在時刻が登録され、作業状態は「退勤済み」に設定される。
+     *
+     * @param \App\Models\Attendance $result 出勤・退勤レコード
+     * @return string 登録完了メッセージ
+     */
     private function addClockOutTime($result)
     {
         $result->update([
@@ -252,6 +281,15 @@ class AttendanceController extends Controller
         return '退勤時刻を登録しました';
     }
 
+    /**
+     * 休憩開始時刻を登録する。
+     *
+     * このメソッドは、指定された出勤・退勤レコードに休憩開始時刻を登録する。
+     * 休憩開始時刻として現在時刻が登録され、作業状態は「休憩中」に設定される。
+     *
+     * @param \App\Models\Attendance $result 出勤・退勤レコード
+     * @return string 登録完了メッセージ
+     */
     private function addOnBreakTime($result)
     {
         Breaktime::create([
@@ -266,6 +304,15 @@ class AttendanceController extends Controller
         return '休憩開始時刻を登録しました';
     }
 
+    /**
+     * 休憩終了時刻を登録する。
+     *
+     * このメソッドは、最新の休憩レコードに休憩終了時刻を登録する。
+     * 休憩終了時刻として現在時刻が登録され、出勤・退勤レコードの作業状態は「休憩終了」に設定される。
+     *
+     * @param \App\Models\Attendance $result 出勤・退勤レコード
+     * @return string 登録完了メッセージ
+     */
     private function addOffBreakTime($result)
     {
         $breaktime = $result->breaktimes->last();

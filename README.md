@@ -72,6 +72,19 @@ PHP のフレームワーク Laravel で作成された Web アプリケーシ�
     php artisan db:seed
     ```
 
-6.  以下の URL にアクセスし、トップページを表示します。
+6.  以下の URL にアクセスし、ログイン画面を表示します。
 
-    http://localhost
+-   ログイン画面 (マネージャー用) http://localhost/login/manager
+
+    -   メールアドレス：manager@example.com
+    -   パスワード：password-manager
+
+-   ログイン画面 (スタッフ用) http://localhost/login
+
+    -   メールアドレス：staff@example.com
+    -   パスワード：password-staff
+
+7. もしアカウントを新規で登録したい場合は以下の URL にアクセスしてください。
+
+-   新規登録画面 (マネージャー用) http://localhost/register/manager
+-   新規登録画面 (スタッフ用) http://localhost/register
